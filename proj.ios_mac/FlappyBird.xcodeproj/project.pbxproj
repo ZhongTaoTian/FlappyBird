@@ -51,6 +51,9 @@
 		6CC743B7AEC6C4A1F5FEC304 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 01F741B993AED8B544209AD5 /* res */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		B397BAE91E4AF54E0075A718 /* SelectPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B397BAE71E4AF54E0075A718 /* SelectPlayer.cpp */; };
+		B397BAF31E4C1EAC0075A718 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B397BAF11E4C1EAC0075A718 /* Game.cpp */; };
+		B397BAF61E4C45720075A718 /* Land.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B397BAF41E4C45720075A718 /* Land.cpp */; };
+		B3D6ECDE1E4C5A070003B568 /* Bird.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B3D6ECDC1E4C5A070003B568 /* Bird.cpp */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -112,6 +115,12 @@
 		B397BAE71E4AF54E0075A718 /* SelectPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectPlayer.cpp; sourceTree = "<group>"; };
 		B397BAE81E4AF54E0075A718 /* SelectPlayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SelectPlayer.hpp; sourceTree = "<group>"; };
 		B397BAED1E4AF7420075A718 /* Const.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Const.hpp; sourceTree = "<group>"; };
+		B397BAF11E4C1EAC0075A718 /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
+		B397BAF21E4C1EAC0075A718 /* Game.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Game.hpp; sourceTree = "<group>"; };
+		B397BAF41E4C45720075A718 /* Land.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Land.cpp; sourceTree = "<group>"; };
+		B397BAF51E4C45720075A718 /* Land.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Land.hpp; sourceTree = "<group>"; };
+		B3D6ECDC1E4C5A070003B568 /* Bird.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bird.cpp; sourceTree = "<group>"; };
+		B3D6ECDD1E4C5A070003B568 /* Bird.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Bird.hpp; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -248,6 +257,12 @@
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
 				B397BAE71E4AF54E0075A718 /* SelectPlayer.cpp */,
 				B397BAE81E4AF54E0075A718 /* SelectPlayer.hpp */,
+				B397BAF11E4C1EAC0075A718 /* Game.cpp */,
+				B397BAF21E4C1EAC0075A718 /* Game.hpp */,
+				B397BAF41E4C45720075A718 /* Land.cpp */,
+				B397BAF51E4C45720075A718 /* Land.hpp */,
+				B3D6ECDC1E4C5A070003B568 /* Bird.cpp */,
+				B3D6ECDD1E4C5A070003B568 /* Bird.hpp */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -426,7 +441,10 @@
 			files = (
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
+				B3D6ECDE1E4C5A070003B568 /* Bird.cpp in Sources */,
+				B397BAF61E4C45720075A718 /* Land.cpp in Sources */,
 				B397BAE91E4AF54E0075A718 /* SelectPlayer.cpp in Sources */,
+				B397BAF31E4C1EAC0075A718 /* Game.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 			);

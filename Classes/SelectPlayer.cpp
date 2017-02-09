@@ -4,9 +4,10 @@
 //
 //  Created by sfbest on 2017/2/8.
 //
-//
+//  SelectModelScene
 
 #include "SelectPlayer.hpp"
+#include "Game.hpp"
 
 Scene* SelectPlayer::createScene()
 {
@@ -31,7 +32,7 @@ bool SelectPlayer::init()
 void SelectPlayer::addButton()
 {
     // add player1
-    float btnY = floor->getContentSize().height + kWinSizeHeight * 0.03;
+    float btnY = land->getContentSize().height + kWinSizeHeight * 0.03;
     addButton("start_button.png", 10, Vec2(0, btnY), "单人游戏");
     
     // add player2
@@ -61,11 +62,15 @@ void SelectPlayer::buttonTouchCallback(Ref *sender, Widget::TouchEventType type)
     if (type == Widget::TouchEventType::ENDED) {
         auto btn = static_cast<Button *>(sender);
         
+        auto type = OnePlayer;
         if (btn->getTag() == 10) {
-            CCLOG("担任");
+            type = OnePlayer;
         } else if (btn->getTag() == 11) {
-            CCLOG("多人");
+            type = TwoPlayer;
         }
+        
+        auto gameScene = Game::createScene(type);
+        Director::getInstance()->replaceScene(gameScene);
     }
 }
 
@@ -81,13 +86,8 @@ void SelectPlayer::addPicture()
     batchNode->addChild(bg);
     
     // add floor
-    floor = Sprite::createWithSpriteFrameName("land.png");
-    floor->setPosition(kWinSizeWidth * 0.2, floor->getContentSize().height * 0.5);
-    batchNode->addChild(floor);
-    
-    floor2 = Sprite::createWithSpriteFrameName("land.png");
-    floor2->setPosition(kWinSizeWidth * 1.2 - 100, floor2->getContentSize().height * 0.5);
-    batchNode->addChild(floor2);
+    land = Land::createLand(false);
+    addChild(land);
     
     // add title
     title = Sprite::createWithSpriteFrameName("title.png");
@@ -105,27 +105,21 @@ void SelectPlayer::onEnterTransitionDidFinish()
     Layer::onEnterTransitionDidFinish();
     
     // floor move animation
-    float durtion = 4;
-    auto move = MoveTo::create(durtion, Vec2(-kWinSizeWidth * 0.5, floor->getPosition().y));
+    float durtion = 8;
+    auto move = MoveTo::create(durtion, Vec2(-kWinSizeWidth, 0));
     auto moveEnd = CallFuncN::create([this](Node *){
-        floor->setPosition(Vec2(kWinSizeWidth * 0.5, floor->getPosition().y));
+        land->setPosition(Vec2(0, 0));
     });
-    floor->runAction(RepeatForever::create(Sequence::create(move, moveEnd, NULL)));
-    
-    auto move1 = MoveTo::create(durtion, Vec2(kWinSizeWidth * 0.5, floor->getPosition().y));
-    auto move1End = CallFuncN::create([this](Node *){
-        floor2->setPosition(kWinSizeWidth * 1.5, floor->getPosition().y);
-    });
-    floor2->runAction(RepeatForever::create(Sequence::create(move1, move1End, NULL)));
+    land->runAction(RepeatForever::create(Sequence::create(move, moveEnd, NULL)));
     
     // bird fly anim
-    float durtion1 = 2;
-    auto moveUp = MoveTo::create(durtion1, Vec2(title->getPosition().x, title->getPosition().y + 20));
-    auto moveDown = MoveTo::create(durtion1, Vec2(title->getPosition().x, title->getPosition().y - 20));
+    float durtion1 = 1.5;
+    auto moveUp = MoveTo::create(durtion1, Vec2(title->getPosition().x, title->getPosition().y + 15));
+    auto moveDown = MoveTo::create(durtion1, Vec2(title->getPosition().x, title->getPosition().y - 15));
     title->runAction(RepeatForever::create(Sequence::create(moveUp, moveDown, NULL)));
     
-    auto birdMoveUp = MoveTo::create(durtion1, Vec2(bird->getPosition().x, bird->getPosition().y + 20));
-    auto bireMoveDown = MoveTo::create(durtion1, Vec2(bird->getPosition().x, bird->getPosition().y - 20));
+    auto birdMoveUp = MoveTo::create(durtion1, Vec2(bird->getPosition().x, bird->getPosition().y + 15));
+    auto bireMoveDown = MoveTo::create(durtion1, Vec2(bird->getPosition().x, bird->getPosition().y - 15));
     auto birdMove = Sequence::create(birdMoveUp, bireMoveDown, NULL);
     
     cocos2d::Vector<SpriteFrame *>frams;
@@ -139,6 +133,8 @@ void SelectPlayer::onEnterTransitionDidFinish()
     birdA->setDelayPerUnit(0.2);
     birdA->setRestoreOriginalFrame(true);
     Animate *anma = Animate::create(birdA);
-    bird->runAction(RepeatForever::create(Spawn::create(anma, birdMove, NULL)));
+
+    bird->runAction(RepeatForever::create(anma));
+    bird->runAction(RepeatForever::create(birdMove));
 }
 

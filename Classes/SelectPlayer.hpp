@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "Const.hpp"
 #include "ui/CocosGUI.h"
+#include "Land.hpp"
 
 USING_NS_CC;
 using namespace ui;
@@ -31,8 +32,7 @@ private:
     
     Sprite* bird;
     Sprite* title;
-    Sprite* floor;
-    Sprite* floor2;
+    Land* land;
     
     virtual void onEnterTransitionDidFinish();
 };
