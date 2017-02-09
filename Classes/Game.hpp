@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "Const.hpp"
 #include "Land.hpp"
+#include "Bird.hpp"
 
 enum PlayerType {
     OnePlayer = 0,
@@ -28,6 +29,8 @@ private:
     SpriteBatchNode* _batchNode;
     Land* _land;
     PlayerType _playerType;
+    Bird* _bird1;
+    Bird* _bird2;
     
     void showWaiting();
     void buildBackgroundSprite();

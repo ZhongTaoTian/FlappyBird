@@ -105,7 +105,7 @@ void SelectPlayer::onEnterTransitionDidFinish()
     Layer::onEnterTransitionDidFinish();
     
     // floor move animation
-    float durtion = 8;
+    float durtion = 4;
     auto move = MoveTo::create(durtion, Vec2(-kWinSizeWidth, 0));
     auto moveEnd = CallFuncN::create([this](Node *){
         land->setPosition(Vec2(0, 0));
@@ -130,7 +130,7 @@ void SelectPlayer::onEnterTransitionDidFinish()
         frams.pushBack(sf);
     }
     Animation *birdA = Animation::createWithSpriteFrames(frams);
-    birdA->setDelayPerUnit(0.2);
+    birdA->setDelayPerUnit(0.1);
     birdA->setRestoreOriginalFrame(true);
     Animate *anma = Animate::create(birdA);
 
