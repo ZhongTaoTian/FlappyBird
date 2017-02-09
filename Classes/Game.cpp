@@ -26,6 +26,11 @@ bool Game::init(PlayerType playerType)
     _playerType = playerType;
     buildBackgroundSprite();
     
+    // add onTouchLisner
+    auto lisner = EventListenerTouchAllAtOnce::create();
+    lisner->onTouchesBegan = CC_CALLBACK_2(Game::onTouchesBegan, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(lisner, this);
+    
     return true;
 }
 
@@ -45,20 +50,11 @@ Game* Game::createGameLayer(PlayerType playerType)
 
 void Game::buildBackgroundSprite()
 {
-    // bg
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("images_block_copy.plist");
-    _batchNode = SpriteBatchNode::create("images_block_copy.pvr.ccz");
-    addChild(_batchNode);
-    auto bgType = arc4random_uniform(2);
-    auto bg = Sprite::createWithSpriteFrameName(bgType == 0 ? "bg_0.png" : "bg_1.png");
-    bg->setPosition(kWinSize / 2);
-    _batchNode->addChild(bg);
+    // add elementLayer
+    _elementLayer = GameElement::createGameElementLayer(_playerType);
+    addChild(_elementLayer);
     
-    // land
-    _land = Land::createLand(true);
-    addChild(_land);
-    
-    // bird
+    // add bird
     _bird1 = Bird::createBird();
     _bird1->setPosition(Vec2(kWinSizeWidth * 0.25, kWinSizeHeight * 0.5));
     this->addChild(_bird1);
@@ -68,15 +64,16 @@ void Game::onEnterTransitionDidFinish()
 {
     Layer::onEnterTransitionDidFinish();
     
-    // floor move animtion
-    float durtion = 4;
-    auto move = MoveTo::create(durtion, Vec2(-kWinSizeWidth, 0));
-    auto moveEnd = CallFuncN::create([this](Node *){
-        _land->setPosition(Vec2(0, 0));
-    });
-    _land->runAction(RepeatForever::create(Sequence::create(move, moveEnd, NULL)));
+    // floor Move
+    _elementLayer->startMoveFloor();
     
     // bird Fly
     _bird1->startFlyAnimation();
     _bird1->startShakeAnimation();
+}
+
+#pragma mark - Touch Action
+void Game::onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+{
+    CCLOG("点击点击");
 }

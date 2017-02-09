@@ -11,13 +11,8 @@
 
 #include <stdio.h>
 #include "Const.hpp"
-#include "Land.hpp"
 #include "Bird.hpp"
-
-enum PlayerType {
-    OnePlayer = 0,
-    TwoPlayer
-};
+#include "GameElement.hpp"
 
 class Game:public Layer {
 public:
@@ -26,16 +21,17 @@ public:
     static Game* createGameLayer(PlayerType playerType);
     
 private:
-    SpriteBatchNode* _batchNode;
-    Land* _land;
     PlayerType _playerType;
     Bird* _bird1;
     Bird* _bird2;
+    GameElement* _elementLayer;
     
     void showWaiting();
     void buildBackgroundSprite();
     
     virtual void onEnterTransitionDidFinish();
+    
+    void onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event);
 };
 
 

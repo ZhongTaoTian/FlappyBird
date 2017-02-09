@@ -10,13 +10,26 @@
 #define GameElement_hpp
 
 #include "Const.hpp"
-#include "Game.hpp"
+#include "Land.hpp"
+
+enum PlayerType {
+    OnePlayer = 0,
+    TwoPlayer
+};
+
 
 class GameElement:public Layer {
     
 public:
     virtual bool init(PlayerType type);
     static GameElement* createGameElementLayer(PlayerType type);
+    void startMoveFloor();
+
+private:
+    SpriteBatchNode* _batchNode;
+    Land* _land;
+    Sprite* _title;
+    Sprite* _tipsTap;
 };
 
 #endif /* GameElement_hpp */

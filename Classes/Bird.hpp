@@ -10,6 +10,7 @@
 #define Bird_hpp
 
 #include "Const.hpp"
+#include "Land.hpp"
 
 enum BirdColor{
     Red = 0,
