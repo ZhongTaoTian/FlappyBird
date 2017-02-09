@@ -1,0 +1,72 @@
+<Solution>
+  <PropertyGroup Name="FlappyBird" Version="3.10.0.0" Type="CocosStudio" />
+  <SolutionFolder>
+    <Group ctype="ResourceGroup">
+      <RootFolder Name=".">
+        <PlistImageFolder Image="www.png" PListFile="www.plist" Name=".www_PList.Dir">
+          <PlistImageFile Name="start_button.png" Key="start_button.png" />
+          <PlistImageFile Name="ready1.png" Key="ready1.png" />
+          <PlistImageFile Name="yes_300.png" Key="yes_300.png" />
+          <PlistImageFile Name="play_button.png" Key="play_button.png" />
+          <PlistImageFile Name="bronze_medal.png" Key="bronze_medal.png" />
+          <PlistImageFile Name="fly_2_0.png" Key="fly_2_0.png" />
+          <PlistImageFile Name="bg_0.png" Key="bg_0.png" />
+          <PlistImageFile Name="free_coin.png" Key="free_coin.png" />
+          <PlistImageFile Name="fly_1_2.png" Key="fly_1_2.png" />
+          <PlistImageFile Name="yes_500.png" Key="yes_500.png" />
+          <PlistImageFile Name="pipe_2.png" Key="pipe_2.png" />
+          <PlistImageFile Name="gamecenter_button.png" Key="gamecenter_button.png" />
+          <PlistImageFile Name="menu_button.png" Key="menu_button.png" />
+          <PlistImageFile Name="bird_1.png" Key="bird_1.png" />
+          <PlistImageFile Name="winlose.png" Key="winlose.png" />
+          <PlistImageFile Name="yes_5.png" Key="yes_5.png" />
+          <PlistImageFile Name="star_2.png" Key="star_2.png" />
+          <PlistImageFile Name="rate_button.png" Key="rate_button.png" />
+          <PlistImageFile Name="score_board.png" Key="score_board.png" />
+          <PlistImageFile Name="fly_1_1.png" Key="fly_1_1.png" />
+          <PlistImageFile Name="no_button.png" Key="no_button.png" />
+          <PlistImageFile Name="silver_medal.png" Key="silver_medal.png" />
+          <PlistImageFile Name="yes_50.png" Key="yes_50.png" />
+          <PlistImageFile Name="coin.png" Key="coin.png" />
+          <PlistImageFile Name="ok_button.png" Key="ok_button.png" />
+          <PlistImageFile Name="yes_200.png" Key="yes_200.png" />
+          <PlistImageFile Name="share_button.png" Key="share_button.png" />
+          <PlistImageFile Name="tap.png" Key="tap.png" />
+          <PlistImageFile Name="gold_medal.png" Key="gold_medal.png" />
+          <PlistImageFile Name="fly_1_0.png" Key="fly_1_0.png" />
+          <PlistImageFile Name="pipe_1.png" Key="pipe_1.png" />
+          <PlistImageFile Name="losewin.png" Key="losewin.png" />
+          <PlistImageFile Name="yes_10.png" Key="yes_10.png" />
+          <PlistImageFile Name="resurrect.png" Key="resurrect.png" />
+          <PlistImageFile Name="home_button.png" Key="home_button.png" />
+          <PlistImageFile Name="bird_0.png" Key="bird_0.png" />
+          <PlistImageFile Name="star_1.png" Key="star_1.png" />
+          <PlistImageFile Name="pause_button.png" Key="pause_button.png" />
+          <PlistImageFile Name="gameover.png" Key="gameover.png" />
+          <PlistImageFile Name="fly_0_2.png" Key="fly_0_2.png" />
+          <PlistImageFile Name="tutorial2p.png" Key="tutorial2p.png" />
+          <PlistImageFile Name="tutorial.png" Key="tutorial.png" />
+          <PlistImageFile Name="platinum_medal.png" Key="platinum_medal.png" />
+          <PlistImageFile Name="bg_1.png" Key="bg_1.png" />
+          <PlistImageFile Name="yes_20.png" Key="yes_20.png" />
+          <PlistImageFile Name="pipe_0.png" Key="pipe_0.png" />
+          <PlistImageFile Name="land.png" Key="land.png" />
+          <PlistImageFile Name="fly_2_2.png" Key="fly_2_2.png" />
+          <PlistImageFile Name="two_play.png" Key="two_play.png" />
+          <PlistImageFile Name="fly_0_1.png" Key="fly_0_1.png" />
+          <PlistImageFile Name="title.png" Key="title.png" />
+          <PlistImageFile Name="star_0.png" Key="star_0.png" />
+          <PlistImageFile Name="new.png" Key="new.png" />
+          <PlistImageFile Name="yes_100.png" Key="yes_100.png" />
+          <PlistImageFile Name="progress_bg.png" Key="progress_bg.png" />
+          <PlistImageFile Name="ready.png" Key="ready.png" />
+          <PlistImageFile Name="yes_1000.png" Key="yes_1000.png" />
+          <PlistImageFile Name="fly_2_1.png" Key="fly_2_1.png" />
+          <PlistImageFile Name="fly_0_0.png" Key="fly_0_0.png" />
+          <PlistImageFile Name="score_button.png" Key="score_button.png" />
+        </PlistImageFolder>
+        <Project Name="MainScene.csd" Type="Scene" />
+      </RootFolder>
+    </Group>
+  </SolutionFolder>
+</Solution>
