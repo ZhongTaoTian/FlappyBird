@@ -75,5 +75,5 @@ void Game::onEnterTransitionDidFinish()
 #pragma mark - Touch Action
 void Game::onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
-    CCLOG("点击点击");
+    _elementLayer->startGame();
 }

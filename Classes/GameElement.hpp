@@ -17,19 +17,26 @@ enum PlayerType {
     TwoPlayer
 };
 
-
 class GameElement:public Layer {
     
 public:
     virtual bool init(PlayerType type);
     static GameElement* createGameElementLayer(PlayerType type);
     void startMoveFloor();
-
+    
+    void startGame();
 private:
     SpriteBatchNode* _batchNode;
     Land* _land;
     Sprite* _title;
     Sprite* _tipsTap;
+    Sprite* _tipsTap2;
+    bool isPlayingGame;
+    PlayerType playType;
+    Sprite* _goldCoin;
+    
+    LabelAtlas* _goldCoinCount;
+    LabelAtlas* _passNum;
 };
 
 #endif /* GameElement_hpp */
