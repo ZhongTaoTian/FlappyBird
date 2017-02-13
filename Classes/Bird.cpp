@@ -4,12 +4,13 @@
 //
 //  Created by sfbest on 2017/2/9.
 //
-//
+//  Bird
 
 #include "Bird.hpp"
 
 #define kBirdFlyTag 10
 #define kBirdShakeTag 11
+#define kBirdRotatoTag 12
 
 Bird* Bird::createBird(BirdColor ExcludeColor)
 {
@@ -27,10 +28,11 @@ Bird* Bird::createBird(BirdColor ExcludeColor)
     if (bird && bird->initWithSpriteFrameName(name)) {
         bird->color = randColor;
         bird->addComponent(PhysicsBody::createBox(bird->getContentSize()));
-//        bird->getPhysicsBody()->setGravityEnable(false);
         bird->getPhysicsBody()->setDynamic(true);
         bird->getPhysicsBody()->setEnabled(false);
-//        bird->getPhysicsBody()->getShape(0)->setFriction(0);
+        bird->getPhysicsBody()->setRotationEnable(false);
+        bird->getPhysicsBody()->setVelocityLimit(500);
+        bird->getPhysicsBody()->addMoment(-1);
         bird->autorelease();
     } else {
         delete bird;
@@ -88,5 +90,20 @@ void Bird::stopShakeAnimation()
     isShakeing = false;
     
     getPhysicsBody()->setEnabled(true);
+}
+
+void Bird::click()
+{
+    stopShakeAnimation();
+
+    getPhysicsBody()->setVelocity(Vec2(0, 300));
+    
+    // click bird rotate action
+    stopActionByTag(kBirdRotatoTag);
+    auto rotaUp = RotateTo::create(0.1, -40);
+    auto rotaDown = RotateTo::create(3, 90);
+    auto seqe = Sequence::create(rotaUp, rotaDown, NULL);
+    seqe->setTag(kBirdRotatoTag);
+    this->runAction(seqe);
 }
 

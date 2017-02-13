@@ -50,6 +50,7 @@
 		67264650BD08F5A9E8B7ED1D /* libcocos2d iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D65417CAF89D7ADE4119FEC /* libcocos2d iOS.a */; };
 		6CC743B7AEC6C4A1F5FEC304 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 01F741B993AED8B544209AD5 /* res */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
+		B36402FD1E519BCF0010A23F /* WaterPipe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B36402FB1E519BCF0010A23F /* WaterPipe.cpp */; };
 		B397BAE91E4AF54E0075A718 /* SelectPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B397BAE71E4AF54E0075A718 /* SelectPlayer.cpp */; };
 		B397BAF31E4C1EAC0075A718 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B397BAF11E4C1EAC0075A718 /* Game.cpp */; };
 		B397BAF61E4C45720075A718 /* Land.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B397BAF41E4C45720075A718 /* Land.cpp */; };
@@ -114,6 +115,8 @@
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		5D65417CAF89D7ADE4119FEC /* libcocos2d iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcocos2d iOS.a"; path = "/Applications/Cocos/Cocos2d-x/cocos2d-x-3.10/prebuilt/ios/libcocos2d iOS.a"; sourceTree = "<absolute>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		B36402FB1E519BCF0010A23F /* WaterPipe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterPipe.cpp; sourceTree = "<group>"; };
+		B36402FC1E519BCF0010A23F /* WaterPipe.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WaterPipe.hpp; sourceTree = "<group>"; };
 		B397BAE71E4AF54E0075A718 /* SelectPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectPlayer.cpp; sourceTree = "<group>"; };
 		B397BAE81E4AF54E0075A718 /* SelectPlayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SelectPlayer.hpp; sourceTree = "<group>"; };
 		B397BAED1E4AF7420075A718 /* Const.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Const.hpp; sourceTree = "<group>"; };
@@ -273,6 +276,8 @@
 				B3D6ECE01E4C67E10003B568 /* GameElement.hpp */,
 				B3D6ECEB1E4DA3300003B568 /* PhysicsEdge.cpp */,
 				B3D6ECEC1E4DA3300003B568 /* PhysicsEdge.hpp */,
+				B36402FB1E519BCF0010A23F /* WaterPipe.cpp */,
+				B36402FC1E519BCF0010A23F /* WaterPipe.hpp */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -456,6 +461,7 @@
 				B397BAF61E4C45720075A718 /* Land.cpp in Sources */,
 				B397BAE91E4AF54E0075A718 /* SelectPlayer.cpp in Sources */,
 				B3D6ECED1E4DA3300003B568 /* PhysicsEdge.cpp in Sources */,
+				B36402FD1E519BCF0010A23F /* WaterPipe.cpp in Sources */,
 				B397BAF31E4C1EAC0075A718 /* Game.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,

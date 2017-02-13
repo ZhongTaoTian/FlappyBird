@@ -11,6 +11,7 @@
 
 #include "Const.hpp"
 #include "Land.hpp"
+#include "WaterPipe.hpp"
 
 enum PlayerType {
     OnePlayer = 0,
@@ -25,6 +26,7 @@ public:
     void startMoveFloor();
     
     void startGame();
+    void addWaterPipe(WaterPipeColorType color);
 private:
     SpriteBatchNode* _batchNode;
     Land* _land;
@@ -34,6 +36,9 @@ private:
     bool isPlayingGame;
     PlayerType playType;
     Sprite* _goldCoin;
+    float _wpHeight;
+    
+    Vector<WaterPipe *>_waterPipes;
     
     LabelAtlas* _goldCoinCount;
     LabelAtlas* _passNum;

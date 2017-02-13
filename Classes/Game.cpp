@@ -12,10 +12,10 @@
 Scene* Game::createScene(PlayerType playerType)
 {
     Scene *scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     // set Gravity acceleration
-    scene->getPhysicsWorld()->setGravity(Vec2(0, -300));
+    scene->getPhysicsWorld()->setGravity(Vec2(0, -400));
     
     auto gameLayer = Game::createGameLayer(playerType);
     if (gameLayer) {
@@ -62,12 +62,12 @@ void Game::buildBackgroundSprite()
 {
     // add elementLayer
     _elementLayer = GameElement::createGameElementLayer(_playerType);
-    addChild(_elementLayer);
+    addChild(_elementLayer, 2);
     
     // add bird
     _bird1 = Bird::createBird();
     _bird1->setPosition(Vec2(kWinSizeWidth * 0.25, kWinSizeHeight * 0.5));
-    this->addChild(_bird1);
+    this->addChild(_bird1, 3);
 }
 
 void Game::onEnterTransitionDidFinish()
@@ -85,9 +85,20 @@ void Game::onEnterTransitionDidFinish()
 #pragma mark - Touch Action
 void Game::onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
-    _bird1->stopShakeAnimation();
+    if (!_gameIsStarting) {
+        _gameIsStarting = true;
+        startGame();
+    }
+    
+    _bird1->click();
+}
 
-    _bird1->getPhysicsBody()->setVelocity(Vec2(0, 250));
-
+void Game::startGame()
+{
+     // start Refresh Time
     _elementLayer->startGame();
+    
+    // setPipeColor
+    _pipeType = WaterPipeColorType(arc4random_uniform(3));
+    _elementLayer->addWaterPipe(_pipeType);
 }

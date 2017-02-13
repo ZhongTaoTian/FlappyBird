@@ -14,6 +14,7 @@
 #include "Bird.hpp"
 #include "GameElement.hpp"
 
+
 class Game:public Layer {
 public:
     static Scene* createScene(PlayerType playerType);
@@ -25,6 +26,8 @@ private:
     Bird* _bird1;
     Bird* _bird2;
     GameElement* _elementLayer;
+    bool _gameIsStarting;
+    WaterPipeColorType _pipeType;
     
     void showWaiting();
     void buildBackgroundSprite();
@@ -32,6 +35,7 @@ private:
     virtual void onEnterTransitionDidFinish();
     
     void onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event);
+    void startGame();
 };
 
 

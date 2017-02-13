@@ -39,7 +39,8 @@ bool GameElement::init(PlayerType type)
     
     // land
     _land = Land::createLand(true);
-    addChild(_land);
+    addChild(_land, 2);
+    _wpHeight = kWinSizeHeight - _land->getContentSize().height;
     
     _title = Sprite::createWithSpriteFrameName("ready.png");
     _title->setPosition(kWinSizeWidth * 0.5, kWinSizeHeight * 0.63);
@@ -60,20 +61,20 @@ bool GameElement::init(PlayerType type)
     _goldCoin = Sprite::createWithSpriteFrameName("coin.png");
     _goldCoin->setAnchorPoint(Vec2(1, 0.5));
     _goldCoin->setPosition(kWinSizeWidth * 0.7, kWinSizeHeight * 0.97 - _goldCoin->getContentSize().height * 0.5);
-    _batchNode->addChild(_goldCoin);
+    _batchNode->addChild(_goldCoin, 4);
     
     auto numTexture = TextureCache().addImage("small_number_iphone.png");
     _goldCoinCount = LabelAtlas::create("0", "small_number_iphone.png", numTexture->getContentSize().width / 10, numTexture->getContentSize().height, '0');
     _goldCoinCount->setAnchorPoint(Vec2(0, 0.5));
     _goldCoinCount->setPosition(_goldCoin->getPosition().x + 20, _goldCoin->getPosition().y);
-    addChild(_goldCoinCount);
+    addChild(_goldCoinCount, 4);
     
     // add passNum
     auto passTexture = TextureCache().addImage("large_number_iphone.png");
     _passNum = LabelAtlas::create("0", "large_number_iphone.png", passTexture->getContentSize().width / 10, passTexture->getContentSize().height, '0');
     _passNum->setAnchorPoint(Vec2(0.5, 0.5));
     _passNum->setPosition(kWinSizeWidth * 0.5, kWinSizeHeight * 0.76);
-    addChild(_passNum);
+    addChild(_passNum, 4);
     
     return true;
 }
@@ -103,4 +104,11 @@ void GameElement::startGame()
     if (playType == OnePlayer) return;
     
     _tipsTap2->setVisible(true);
+}
+
+void GameElement::addWaterPipe(WaterPipeColorType color)
+{
+    auto wp = WaterPipe::createWaterPipe(color, _wpHeight);
+    wp->setPosition(kWinSizeWidth * 0.5, 0);
+    this->addChild(wp);
 }

@@ -29,10 +29,13 @@ public:
     void stopFlyAnimation();
     
     void startShakeAnimation();
-    void stopShakeAnimation();
+    void click();
     
 private:
+    
+    void stopShakeAnimation();
     bool isShakeing;
+    
 };
 
 #endif /* Bird_hpp */
