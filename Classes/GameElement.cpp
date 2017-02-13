@@ -75,7 +75,6 @@ bool GameElement::init(PlayerType type)
     _passNum->setPosition(kWinSizeWidth * 0.5, kWinSizeHeight * 0.76);
     addChild(_passNum);
     
-    
     return true;
 }
 

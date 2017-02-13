@@ -7,15 +7,25 @@
 //  GameCenter
 
 #include "Game.hpp"
+#include "PhysicsEdge.hpp"
 
 Scene* Game::createScene(PlayerType playerType)
 {
-    Scene *scene = Scene::create();
+    Scene *scene = Scene::createWithPhysics();
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    
+    // set Gravity acceleration
+    scene->getPhysicsWorld()->setGravity(Vec2(0, -300));
     
     auto gameLayer = Game::createGameLayer(playerType);
     if (gameLayer) {
         scene->addChild(gameLayer);
     }
+    
+    // addPhysicsEdge
+    auto edge = PhysicsEdge::create();
+    
+    scene->addChild(edge);
     
     return scene;
 }
@@ -75,5 +85,9 @@ void Game::onEnterTransitionDidFinish()
 #pragma mark - Touch Action
 void Game::onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
+    _bird1->stopShakeAnimation();
+
+    _bird1->getPhysicsBody()->setVelocity(Vec2(0, 250));
+
     _elementLayer->startGame();
 }

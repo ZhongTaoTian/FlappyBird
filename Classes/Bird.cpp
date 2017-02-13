@@ -26,6 +26,11 @@ Bird* Bird::createBird(BirdColor ExcludeColor)
     
     if (bird && bird->initWithSpriteFrameName(name)) {
         bird->color = randColor;
+        bird->addComponent(PhysicsBody::createBox(bird->getContentSize()));
+//        bird->getPhysicsBody()->setGravityEnable(false);
+        bird->getPhysicsBody()->setDynamic(true);
+        bird->getPhysicsBody()->setEnabled(false);
+//        bird->getPhysicsBody()->getShape(0)->setFriction(0);
         bird->autorelease();
     } else {
         delete bird;
@@ -62,16 +67,26 @@ void Bird::stopFlyAnimation()
 
 void Bird::startShakeAnimation()
 {
+    if (isShakeing) return;
+
     auto durtion = 0.7;
     auto moveUp = MoveTo::create(durtion, Vec2(getPosition().x, getPosition().y + 20));
     auto moveDown = MoveTo::create(durtion, Vec2(getPosition().x, getPosition().y - 20));
     RepeatForever *anim = RepeatForever::create(Sequence::create(moveUp, moveDown, NULL));
     anim->setTag(kBirdShakeTag);
     runAction(anim);
+    
+    isShakeing = true;
 }
 
 void Bird::stopShakeAnimation()
 {
-
+    if (!isShakeing) return;
+        
+    stopActionByTag(kBirdShakeTag);
+    
+    isShakeing = false;
+    
+    getPhysicsBody()->setEnabled(true);
 }
 

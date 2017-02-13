@@ -30,6 +30,9 @@ public:
     
     void startShakeAnimation();
     void stopShakeAnimation();
+    
+private:
+    bool isShakeing;
 };
 
 #endif /* Bird_hpp */
