@@ -27,6 +27,7 @@ public:
     float _birdX;
     
     void startGame();
+    void stopGame();
     void addWaterPipe(WaterPipeColorType color);
 private:
     SpriteBatchNode* _batchNode;

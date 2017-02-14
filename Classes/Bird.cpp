@@ -33,6 +33,7 @@ Bird* Bird::createBird(BirdColor ExcludeColor)
         bird->getPhysicsBody()->setRotationEnable(false);
         bird->getPhysicsBody()->setVelocityLimit(500);
         bird->getPhysicsBody()->addMoment(-1);
+        bird->getPhysicsBody()->setContactTestBitmask(1);
         bird->autorelease();
     } else {
         delete bird;
@@ -62,9 +63,35 @@ void Bird::startFlyAnimation()
     runAction(fly);
 }
 
+void Bird::stopFlyAndRotatoAnimation()
+{
+    stopFlyAnimation();
+    stopActionByTag(kBirdRotatoTag);
+}
+
 void Bird::stopFlyAnimation()
 {
     stopActionByTag(kBirdFlyTag);
+}
+
+void Bird::startFallAnimation(AnimEnd animEnd)
+{
+    _end = animEnd;
+    float currentY = this->getPosition().y;
+    auto *land = Sprite::createWithSpriteFrameName("land.png");
+    float disH = currentY - land->getContentSize().height;
+    float duration = disH / 800;
+    
+    auto move = MoveTo::create(duration, Vec2(getPosition().x, land->getContentSize().height));
+    auto rota = RotateTo::create(duration, 80);
+    
+//    CallFunc
+    auto callback = CallFunc::create([this](){
+        if (_end) {
+            _end();
+        }
+    });
+    this->runAction(Sequence::create(Spawn::create(move, rota, NULL), callback, NULL));
 }
 
 void Bird::startShakeAnimation()

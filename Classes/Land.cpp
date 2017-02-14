@@ -27,6 +27,7 @@ bool Land::init(bool needPhysics)
         land->addComponent(PhysicsBody::createEdgeBox(land->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 5));
         land->setAnchorPoint(Vec2(0, 1));
         land->setPosition(Vec2(0, getContentSize().height - 20));
+        land->getPhysicsBody()->setContactTestBitmask(1);
         this->addChild(land);
     }
     

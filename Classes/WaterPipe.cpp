@@ -43,6 +43,7 @@ bool WaterPipe::init(WaterPipeColorType color, float height)
     _topPipe->setAnchorPoint(Vec2(0, 0));
     _topPipe->setPosition(0, kWinSizeHeight - topWpAppearHeigh);
     _topPipe->addComponent(PhysicsBody::createEdgeBox(_topPipe->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, -3));
+    _topPipe->getPhysicsBody()->setContactTestBitmask(1);
     this->addChild(_topPipe);
     
     _bottomPipe = Sprite::createWithSpriteFrameName(fileName);
@@ -51,6 +52,7 @@ bool WaterPipe::init(WaterPipeColorType color, float height)
     _bottomPipe->setPosition(Vec2(0, bottomWpAppearHeigh + kWinSizeHeight - height));
     _bottomPipe->addComponent(PhysicsBody::createEdgeBox(_bottomPipe->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, -3));
     this->addChild(_bottomPipe);
+    _bottomPipe->getPhysicsBody()->setContactTestBitmask(1);
     auto aa = Rect();
 
     _coin = Sprite::createWithSpriteFrameName("coin.png");

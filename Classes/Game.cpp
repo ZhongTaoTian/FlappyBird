@@ -12,7 +12,7 @@
 Scene* Game::createScene(PlayerType playerType)
 {
     Scene *scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     // set Gravity acceleration
     scene->getPhysicsWorld()->setGravity(Vec2(0, -1200));
@@ -40,6 +40,38 @@ bool Game::init(PlayerType playerType)
     auto lisner = EventListenerTouchAllAtOnce::create();
     lisner->onTouchesBegan = CC_CALLBACK_2(Game::onTouchesBegan, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(lisner, this);
+    
+    // add Contact listener
+    auto contactLisner = EventListenerPhysicsContact::create();
+    contactLisner->onContactBegin = CC_CALLBACK_1(Game::onContactBegan, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactLisner, this);
+    
+    return true;
+}
+
+bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
+{
+    if (_gameOver) return false;
+    
+    _gameOver = true;
+    
+#warning play sound effect
+    
+    // Contact object stopGame
+    if (_playerType == OnePlayer) {
+        // stop Fly and rota
+        _bird1->stopFlyAndRotatoAnimation();
+        // start Fall
+        _bird1->startFallAnimation([this](){
+            // show revival view
+        
+        });
+    } else {
+        
+    }
+    
+    _elementLayer->stopGame();
+    _bird1->getPhysicsBody()->removeFromWorld();
     
     return true;
 }
@@ -87,6 +119,8 @@ void Game::onEnterTransitionDidFinish()
 #pragma mark - Touch Action
 void Game::onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
+    if (_gameOver) return;
+    
     if (!_gameIsStarting) {
         _gameIsStarting = true;
         startGame();

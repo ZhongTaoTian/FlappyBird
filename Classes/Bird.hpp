@@ -12,6 +12,8 @@
 #include "Const.hpp"
 #include "Land.hpp"
 
+typedef std::function<void ()> AnimEnd;
+
 enum BirdColor{
     Red = 0,
     Blue,
@@ -27,7 +29,10 @@ public:
     static Bird* createBird(BirdColor ExcludeColor = Random);
     void startFlyAnimation();
     void stopFlyAnimation();
+    void stopFlyAndRotatoAnimation();
+    AnimEnd _end;
     
+    void startFallAnimation(AnimEnd animEnd);
     void startShakeAnimation();
     void click();
     

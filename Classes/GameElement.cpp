@@ -106,6 +106,12 @@ void GameElement::startGame()
     _tipsTap2->setVisible(true);
 }
 
+void GameElement::stopGame()
+{
+    _land->pause();
+    unschedule(schedule_selector(GameElement::update));
+}
+
 void GameElement::addWaterPipe(WaterPipeColorType color)
 {
     _wpColor = color;

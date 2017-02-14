@@ -9,12 +9,10 @@
 #ifndef SelectPlayer_hpp
 #define SelectPlayer_hpp
 
-#include <stdio.h>
 #include "Const.hpp"
 #include "ui/CocosGUI.h"
 #include "Land.hpp"
 
-USING_NS_CC;
 using namespace ui;
 
 class SelectPlayer:public Layer {

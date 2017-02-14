@@ -27,6 +27,7 @@ private:
     GameElement* _elementLayer;
     bool _gameIsStarting;
     WaterPipeColorType _pipeType;
+    bool _gameOver;
     
     void showWaiting();
     void buildBackgroundSprite();
@@ -34,6 +35,7 @@ private:
     virtual void onEnterTransitionDidFinish();
     
     void onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event);
+    bool onContactBegan(PhysicsContact& cat);
     void startGame();
 };
 
