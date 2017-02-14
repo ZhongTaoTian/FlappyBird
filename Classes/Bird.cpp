@@ -96,12 +96,12 @@ void Bird::click()
 {
     stopShakeAnimation();
 
-    getPhysicsBody()->setVelocity(Vec2(0, 300));
+    getPhysicsBody()->setVelocity(Vec2(0, 500));
     
     // click bird rotate action
     stopActionByTag(kBirdRotatoTag);
     auto rotaUp = RotateTo::create(0.1, -40);
-    auto rotaDown = RotateTo::create(3, 90);
+    auto rotaDown = RotateTo::create(2.5, 80);
     auto seqe = Sequence::create(rotaUp, rotaDown, NULL);
     seqe->setTag(kBirdRotatoTag);
     this->runAction(seqe);

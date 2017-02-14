@@ -24,6 +24,7 @@ public:
     virtual bool init(PlayerType type);
     static GameElement* createGameElementLayer(PlayerType type);
     void startMoveFloor();
+    float _birdX;
     
     void startGame();
     void addWaterPipe(WaterPipeColorType color);
@@ -37,11 +38,15 @@ private:
     PlayerType playType;
     Sprite* _goldCoin;
     float _wpHeight;
+    int _index;
+    WaterPipeColorType _wpColor;
     
     Vector<WaterPipe *>_waterPipes;
     
     LabelAtlas* _goldCoinCount;
     LabelAtlas* _passNum;
+    
+    virtual void update(float dt);
 };
 
 #endif /* GameElement_hpp */

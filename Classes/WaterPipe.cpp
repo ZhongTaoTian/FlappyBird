@@ -8,7 +8,9 @@
 
 #include "WaterPipe.hpp"
 
-#define kIntervalDistance (kWinSizeHeight * 0.2)
+#define kIntervalDistance (kWinSizeHeight * 0.25)
+#define kPipeLimitHeight  (kWinSizeHeight * 0.15)
+
 // pipe_0.png
 bool WaterPipe::init(WaterPipeColorType color, float height)
 {
@@ -27,24 +29,36 @@ bool WaterPipe::init(WaterPipeColorType color, float height)
     } else {
         type = Sloping;
     }
-    
+   
     float wpHeightSum = height - kIntervalDistance;
-    auto topWpAppearHeigh = arc4random_uniform(wpHeightSum - 100) + 100;
+    auto topWpAppearHeigh = arc4random_uniform(wpHeightSum - kPipeLimitHeight) + kPipeLimitHeight;
     auto bottomWpAppearHeigh = wpHeightSum - topWpAppearHeigh;
+    
+    while (bottomWpAppearHeigh < kPipeLimitHeight) {
+        topWpAppearHeigh = arc4random_uniform(wpHeightSum - kPipeLimitHeight) + kPipeLimitHeight;
+        bottomWpAppearHeigh = wpHeightSum - topWpAppearHeigh;
+    }
     
     _topPipe = Sprite::createWithSpriteFrameName(fileName);
     _topPipe->setAnchorPoint(Vec2(0, 0));
     _topPipe->setPosition(0, kWinSizeHeight - topWpAppearHeigh);
+    _topPipe->addComponent(PhysicsBody::createEdgeBox(_topPipe->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, -3));
     this->addChild(_topPipe);
     
     _bottomPipe = Sprite::createWithSpriteFrameName(fileName);
     _bottomPipe->setFlippedY(true);
     _bottomPipe->setAnchorPoint(Vec2(0, 1));
-    _bottomPipe->setPosition(Vec2(0, bottomWpAppearHeigh - height + kWinSizeHeight));
+    _bottomPipe->setPosition(Vec2(0, bottomWpAppearHeigh + kWinSizeHeight - height));
+    _bottomPipe->addComponent(PhysicsBody::createEdgeBox(_bottomPipe->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, -3));
     this->addChild(_bottomPipe);
+    auto aa = Rect();
+
+    _coin = Sprite::createWithSpriteFrameName("coin.png");
+    _coin->setPosition(Vec2(_topPipe->getContentSize().width * 0.5, _bottomPipe->getBoundingBox().getMaxY() + kPipeLimitHeight * 0.5 + _coin->getContentSize().height * 0.5));
+    addChild(_coin);
 
     this->setContentSize(Size(_topPipe->getContentSize().width, height));
-    this->setAnchorPoint(Vec2(0, 0));
+    this->setAnchorPoint(Vec2(1, 0));
     
     return true;
 }

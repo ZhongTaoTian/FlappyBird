@@ -12,10 +12,10 @@
 Scene* Game::createScene(PlayerType playerType)
 {
     Scene *scene = Scene::createWithPhysics();
-//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     // set Gravity acceleration
-    scene->getPhysicsWorld()->setGravity(Vec2(0, -400));
+    scene->getPhysicsWorld()->setGravity(Vec2(0, -1200));
     
     auto gameLayer = Game::createGameLayer(playerType);
     if (gameLayer) {
@@ -68,6 +68,8 @@ void Game::buildBackgroundSprite()
     _bird1 = Bird::createBird();
     _bird1->setPosition(Vec2(kWinSizeWidth * 0.25, kWinSizeHeight * 0.5));
     this->addChild(_bird1, 3);
+    
+    _elementLayer->_birdX = _bird1->getPosition().x;
 }
 
 void Game::onEnterTransitionDidFinish()

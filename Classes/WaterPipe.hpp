@@ -30,12 +30,12 @@ class WaterPipe:public Layer {
 public:
     virtual bool init(WaterPipeColorType color, float height);
     static WaterPipe* createWaterPipe(WaterPipeColorType color, float height);
+    Sprite *_coin;
     
 private:
     Sprite *_topPipe;
     Sprite *_bottomPipe;
     Sprite *_plant;
-    Sprite *_coin;
     
     char fileName[30];
     WaterPipeType type;

@@ -44,7 +44,7 @@ bool GameElement::init(PlayerType type)
     
     _title = Sprite::createWithSpriteFrameName("ready.png");
     _title->setPosition(kWinSizeWidth * 0.5, kWinSizeHeight * 0.63);
-    _batchNode->addChild(_title);
+    _batchNode->addChild(_title, 4);
     
     // tips pictrue
     string name = type == OnePlayer ? "tap.png" : "tutorial.png";
@@ -56,17 +56,17 @@ bool GameElement::init(PlayerType type)
     _tipsTap2->setPosition(kWinSizeWidth * 0.5, kWinSizeHeight * 0.28);
     _tipsTap2->setVisible(false);
     addChild(_tipsTap2);
-
+    
     // add goldCoin
     _goldCoin = Sprite::createWithSpriteFrameName("coin.png");
     _goldCoin->setAnchorPoint(Vec2(1, 0.5));
-    _goldCoin->setPosition(kWinSizeWidth * 0.7, kWinSizeHeight * 0.97 - _goldCoin->getContentSize().height * 0.5);
-    _batchNode->addChild(_goldCoin, 4);
+    _goldCoin->setPosition(kWinSizeWidth * 0.72, kWinSizeHeight * 0.97 - _goldCoin->getContentSize().height * 0.5);
+    this->addChild(_goldCoin, 4);
     
     auto numTexture = TextureCache().addImage("small_number_iphone.png");
-    _goldCoinCount = LabelAtlas::create("0", "small_number_iphone.png", numTexture->getContentSize().width / 10, numTexture->getContentSize().height, '0');
+    _goldCoinCount = LabelAtlas::create("1000", "small_number_iphone.png", numTexture->getContentSize().width / 10, numTexture->getContentSize().height, '0');
     _goldCoinCount->setAnchorPoint(Vec2(0, 0.5));
-    _goldCoinCount->setPosition(_goldCoin->getPosition().x + 20, _goldCoin->getPosition().y);
+    _goldCoinCount->setPosition(_goldCoin->getPosition().x + 10, _goldCoin->getPosition().y);
     addChild(_goldCoinCount, 4);
     
     // add passNum
@@ -108,7 +108,44 @@ void GameElement::startGame()
 
 void GameElement::addWaterPipe(WaterPipeColorType color)
 {
-    auto wp = WaterPipe::createWaterPipe(color, _wpHeight);
-    wp->setPosition(kWinSizeWidth * 0.5, 0);
-    this->addChild(wp);
+    _wpColor = color;
+    schedule(schedule_selector(GameElement::update), 1 / 60.0f);
 }
+
+void GameElement::update(float dt)
+{
+    _index++;
+    
+    if (_index == 135) {
+        // add water pipe
+        _index = 0;
+        auto wp = WaterPipe::createWaterPipe(_wpColor, _wpHeight);
+        wp->setPosition(kWinSizeWidth, 0);
+        addChild(wp);
+        _waterPipes.pushBack(wp);
+    }
+    
+    for (auto it = _waterPipes.begin(); it != _waterPipes.end(); it ++) {
+        WaterPipe *wp = *it;
+        // move wp
+        wp->setPosition(Vec2(wp->getPosition().x - 3, wp->getPosition().y));
+        
+        if (wp->_coin->isVisible()) {
+            // remove coin
+            if (wp->getPosition().x < _birdX) {
+                wp->_coin->setVisible(false);
+                
+                // play sound effect
+            }
+        }
+        if (wp->getPosition().x < 0 - wp->getContentSize().width) {
+            // remove wp
+            _waterPipes.eraseObject(wp);
+            wp->removeFromParent();
+        }
+    }
+}
+
+        
+        
+        

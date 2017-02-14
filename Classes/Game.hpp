@@ -14,7 +14,6 @@
 #include "Bird.hpp"
 #include "GameElement.hpp"
 
-
 class Game:public Layer {
 public:
     static Scene* createScene(PlayerType playerType);
