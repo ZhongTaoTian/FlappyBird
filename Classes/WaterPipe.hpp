@@ -31,11 +31,13 @@ public:
     virtual bool init(WaterPipeColorType color, float height);
     static WaterPipe* createWaterPipe(WaterPipeColorType color, float height);
     Sprite *_coin;
+    void setChildPhysicsBodyEnabled(bool enabled);
     
 private:
     Sprite *_topPipe;
     Sprite *_bottomPipe;
     Sprite *_plant;
+    Vector<Node *> _phyBodys;
     
     char fileName[30];
     WaterPipeType type;

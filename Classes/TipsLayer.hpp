@@ -22,7 +22,7 @@ public:
     virtual bool init(int resCount);
     static TipsLayer* createTipsLayer(int resCount);
 
-    void showResurrectionTipsView(Callback yesBtnClick, Callback noBtnClick, int score);
+    void showResurrectionTipsView(Callback yesBtnClick, Callback noBtnClick, int score, Callback playAgain, Callback share);
    
 private:
     Sprite* _resurrection;
@@ -33,6 +33,8 @@ private:
     
     Callback _yesBtnClick;
     Callback _noBtnClick;
+    Callback _playAgain;
+    Callback _share;
     Layer* _scoreLayer;
     ProgressTimer* _progress;
     
@@ -42,6 +44,7 @@ private:
     void continueGame();
     
     Sprite* addSpriteWithName(const std::string &name, Vec2 position);
+    Node* addBtn(int tag, const std::string imageName, Vec2 position, Vec2 anchorPoint);
 };
 
 #endif /* TipsLayer_hpp */

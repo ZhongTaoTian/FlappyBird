@@ -112,6 +112,15 @@ void GameElement::stopGame()
     unschedule(schedule_selector(GameElement::update));
 }
 
+void GameElement::birdResurrection(function<void ()> timeEnd)
+{
+    _unTimeEnd = timeEnd;
+    _unrivalledIndex = 200;
+    _birdUnrivalled = true;
+    _land->resume();
+    schedule(schedule_selector(GameElement::update), 1 / 60.0f);
+}
+
 void GameElement::addWaterPipe(WaterPipeColorType color)
 {
     _wpColor = color;
@@ -120,6 +129,14 @@ void GameElement::addWaterPipe(WaterPipeColorType color)
 
 void GameElement::update(float dt)
 {
+    if (_birdUnrivalled) {
+        _unrivalledIndex--;
+        if (_unrivalledIndex <= 0) {
+            _birdUnrivalled = false;
+            _unTimeEnd();
+        }
+    }
+    
     _index++;
     
     if (_index == 135) {
@@ -133,6 +150,13 @@ void GameElement::update(float dt)
     
     for (auto it = _waterPipes.begin(); it != _waterPipes.end(); it ++) {
         WaterPipe *wp = *it;
+        
+        if (_birdUnrivalled) {
+            wp->setChildPhysicsBodyEnabled(false);
+        } else {
+            wp->setChildPhysicsBodyEnabled(true);
+        }
+        
         // move wp
         wp->setPosition(Vec2(wp->getPosition().x - 3, wp->getPosition().y));
         
@@ -155,10 +179,8 @@ void GameElement::update(float dt)
 void GameElement::hiddenAllLabel()
 {
     _passNum->setVisible(false);
-    _goldCoinCount->setVisible(false);
-    _goldCoin->setVisible(false);
 }
 
-        
-        
-        
+
+
+

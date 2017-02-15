@@ -13,7 +13,7 @@
 Scene* Game::createScene(PlayerType playerType)
 {
     Scene *scene = Scene::createWithPhysics();
-//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     // set Gravity acceleration
     scene->getPhysicsWorld()->setGravity(Vec2(0, -1200));
@@ -56,7 +56,7 @@ bool Game::init(PlayerType playerType)
 
 bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
 {
-    if (_gameOver) return false;
+    if (_gameOver || _birdUnrivalled) return false;
     
     _gameOver = true;
     
@@ -72,11 +72,24 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
             auto tipsLayer = TipsLayer::createTipsLayer(_resCount);
             this->addChild(tipsLayer, 4);
             tipsLayer->showResurrectionTipsView([this](){
-                CCLOG("Yes");
+                // Resurrection
+                _bird1->birdResurrection(Vec2(kWinSizeWidth * 0.25, kWinSizeHeight * 0.5));
+                _elementLayer->birdResurrection([this](){
+                    _birdUnrivalled = false;
+                    CCLOG("无敌时间结束");
+                });
+                _gameOver = false;
+                _birdUnrivalled = true;
             }, [this](){
-                CCLOG("NO");
                 _elementLayer->hiddenAllLabel();
-            }, 100);
+            }, 100, [](){
+                // player again
+                Director::getInstance()->replaceScene(TransitionFade::create(0.25, Game::createScene(OnePlayer), Color3B(255, 255, 255)));
+                
+            }, [](){
+                // share
+                CCLOG("分享");
+            });
             
         });
     } else {
@@ -84,7 +97,7 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
     }
     
     _elementLayer->stopGame();
-    _bird1->getPhysicsBody()->removeFromWorld();
+    _bird1->getPhysicsBody()->setEnabled(false);
     
     return true;
 }
@@ -150,4 +163,7 @@ void Game::startGame()
     // setPipeColor
     _pipeType = WaterPipeColorType(arc4random_uniform(3));
     _elementLayer->addWaterPipe(_pipeType);
+
 }
+
+

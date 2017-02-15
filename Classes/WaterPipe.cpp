@@ -45,6 +45,7 @@ bool WaterPipe::init(WaterPipeColorType color, float height)
     _topPipe->addComponent(PhysicsBody::createEdgeBox(_topPipe->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, -3));
     _topPipe->getPhysicsBody()->setContactTestBitmask(1);
     this->addChild(_topPipe);
+    _phyBodys.pushBack(_topPipe);
     
     _bottomPipe = Sprite::createWithSpriteFrameName(fileName);
     _bottomPipe->setFlippedY(true);
@@ -52,8 +53,8 @@ bool WaterPipe::init(WaterPipeColorType color, float height)
     _bottomPipe->setPosition(Vec2(0, bottomWpAppearHeigh + kWinSizeHeight - height));
     _bottomPipe->addComponent(PhysicsBody::createEdgeBox(_bottomPipe->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, -3));
     this->addChild(_bottomPipe);
+    _phyBodys.pushBack(_bottomPipe);
     _bottomPipe->getPhysicsBody()->setContactTestBitmask(1);
-    auto aa = Rect();
 
     _coin = Sprite::createWithSpriteFrameName("coin.png");
     _coin->setPosition(Vec2(_topPipe->getContentSize().width * 0.5, _bottomPipe->getBoundingBox().getMaxY() + kPipeLimitHeight * 0.5 + _coin->getContentSize().height * 0.5));
@@ -77,3 +78,14 @@ WaterPipe* WaterPipe::createWaterPipe(WaterPipeColorType color, float height)
     
     return wp;
 }
+
+void WaterPipe::setChildPhysicsBodyEnabled(bool enabled)
+{
+    for (auto it = _phyBodys.begin(); it != _phyBodys.end(); it++) {
+        Node *node = *it;
+        node->getPhysicsBody()->setEnabled(enabled);
+    }
+}
+
+
+

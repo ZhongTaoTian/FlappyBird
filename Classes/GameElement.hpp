@@ -28,9 +28,10 @@ public:
    
     void startGame();
     void stopGame();
+    void birdResurrection(function<void ()> timeEnd);
     void addWaterPipe(WaterPipeColorType color);
-    
     void hiddenAllLabel();
+    
 private:
     SpriteBatchNode* _batchNode;
     Land* _land;
@@ -41,8 +42,11 @@ private:
     PlayerType playType;
     Sprite* _goldCoin;
     float _wpHeight;
-    int _index;
+    int _index = 80;
     WaterPipeColorType _wpColor;
+    function<void ()> _unTimeEnd;
+    bool _birdUnrivalled;
+    int _unrivalledIndex;
     
     Vector<WaterPipe *>_waterPipes;
     

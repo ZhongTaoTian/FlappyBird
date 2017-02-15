@@ -67,10 +67,12 @@ TipsLayer *TipsLayer::createTipsLayer(int resCount)
     return tips;
 }
 
-void TipsLayer::showResurrectionTipsView(Callback yesBtnClick, Callback noBtnClick, int score)
+void TipsLayer::showResurrectionTipsView(Callback yesBtnClick, Callback noBtnClick, int score, Callback playAgain, Callback share)
 {
     _yesBtnClick = yesBtnClick;
     _noBtnClick = noBtnClick;
+    _playAgain = playAgain;
+    _share = share;
     _scroe = score;
     _resurrection->setVisible(true);
     _noBtn->setVisible(true);
@@ -84,6 +86,8 @@ void TipsLayer::update(float dt)
     auto pro = _progress->getPercentage() - 0.5;
     if (pro <= 0) {
         unschedule(schedule_selector(TipsLayer::update));
+        _noBtnClick();
+        showGameOverTips(_scroe);
     }
     _progress->setPercentage(pro--);
 }
@@ -102,8 +106,18 @@ void TipsLayer::buttonTouchCallback(cocos2d::Ref *sender, Widget::TouchEventType
             case kYesBtnTag:
                 unschedule(schedule_selector(TipsLayer::update));
                 _yesBtnClick();
+                this->removeFromParent();
                 break;
-            
+            case kOkBtnTag:
+                if (_playAgain) {
+                    _playAgain();
+                }
+                break;
+            case kShareBtnTag:
+                if (_share) {
+                    _share();
+                }
+                break;
             default:
                 break;
         }
@@ -118,13 +132,56 @@ void TipsLayer::showGameOverTips(int score)
     
     _scoreLayer = Layer::create();
     this->addChild(_scoreLayer);
+    _scoreLayer->setPosition(Vec2(0, -kWinSizeHeight));
     
     // Layout score
     auto gameOver = addSpriteWithName("gameover.png", Vec2(kWinSizeWidth * 0.5, kWinSizeHeight * 0.8));
     auto board = addSpriteWithName("score_board.png", Vec2(kWinSizeWidth * 0.5, 0));
     board->setPosition(Vec2(kWinSizeWidth * 0.5, gameOver->getBoundingBox().getMidY() - gameOver->getContentSize().height * 0.5 - board->getContentSize().height * 0.5 - 30));
     
+    auto tmp = addBtn(kOkBtnTag, "ok_button.png", Vec2(board->getBoundingBox().getMinX() + 30, board->getBoundingBox().getMinY() - 20), Vec2(0, 1));
+    addBtn(kShareBtnTag, "share_button.png", Vec2(board->getBoundingBox().getMaxX() - 40, board->getBoundingBox().getMinY() - 20), Vec2(1, 1));
     
+    auto boardH = board->getContentSize().height;
+    auto boardW = board->getContentSize().width;
+    // add score label
+    auto numTexture = TextureCache().addImage("small_number_iphone.png");
+    auto scoreLb = LabelAtlas::create(to_string(score), "small_number_iphone.png", numTexture->getContentSize().width / 10, numTexture->getContentSize().height, '0');
+    scoreLb->setAnchorPoint(Vec2(1, 0.5));
+    scoreLb->setPosition(Vec2(boardW * 0.86, boardH * 0.635));
+    board->addChild(scoreLb);
+    
+    auto bestLb = LabelAtlas::create("1000", "small_number_iphone.png", numTexture->getContentSize().width / 10, scoreLb->getContentSize().height, '0');
+    bestLb->setAnchorPoint(Vec2(1, 0.5));
+    bestLb->setPosition(Vec2(boardW * 0.86,boardH * 0.3));
+    board->addChild(bestLb);
+    
+    string name;
+    if (score >= 0 && score < 100) {
+        name = "bronze_medal.png";
+    } else if (score >= 100 && score < 200) {
+        name = "platinum_medal.png";
+    } else if (score >= 200) {
+        name = "gold_medal.png";
+    }
+    
+    if (name.length() > 0) {
+        auto madel = Sprite::createWithSpriteFrameName(name);
+        madel->setPosition(boardW * 0.22, boardH * 0.47);
+        board->addChild(madel);
+    }
+    
+    // start animation
+    auto move = MoveTo::create(0.5, Vec2(0, 0));
+
+    auto anim = Sequence::create(move, DelayTime::create(0.2), CallFunc::create([this](){
+        auto btn1 = _scoreLayer->getChildByTag(kOkBtnTag);
+        auto btn2 = _scoreLayer->getChildByTag(kShareBtnTag);
+        btn1->runAction(FadeIn::create(0.3));
+        btn2->runAction(FadeIn::create(0.3));
+    }), NULL);
+    
+    _scoreLayer->runAction(anim);
 }
 
 Sprite* TipsLayer::addSpriteWithName(const std::string &name, Vec2 position)
@@ -135,7 +192,19 @@ Sprite* TipsLayer::addSpriteWithName(const std::string &name, Vec2 position)
     return sp;
 }
 
-
+Node* TipsLayer::addBtn(int tag, const std::string imageName, cocos2d::Vec2 position, Vec2 anchorPoint)
+{
+    auto btn = Button::create();
+    btn->setAnchorPoint(anchorPoint);
+    btn->loadTextures(imageName, imageName, "", TextureResType::PLIST);
+    btn->setPosition(position);
+    btn->addTouchEventListener(CC_CALLBACK_2(TipsLayer::buttonTouchCallback, this));
+    btn->setTag(tag);
+    btn->setOpacity(0);
+    _scoreLayer->addChild(btn);
+    
+    return btn;
+}
 
 
 

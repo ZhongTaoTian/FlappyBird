@@ -35,9 +35,9 @@ public:
     void startFallAnimation(AnimEnd animEnd);
     void startShakeAnimation();
     void click();
+    void birdResurrection(Vec2 position);
     
 private:
-    
     void stopShakeAnimation();
     bool isShakeing;
     

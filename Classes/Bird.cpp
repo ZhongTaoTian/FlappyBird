@@ -134,3 +134,12 @@ void Bird::click()
     this->runAction(seqe);
 }
 
+void Bird::birdResurrection(cocos2d::Vec2 position)
+{
+    this->getPhysicsBody()->setEnabled(true);
+    this->startFlyAnimation();
+    this->setPosition(position);
+    this->setOpacity(150);
+    this->setRotation(0);
+}
+

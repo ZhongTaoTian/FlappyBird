@@ -69,8 +69,8 @@ void SelectPlayer::buttonTouchCallback(Ref *sender, Widget::TouchEventType type)
             type = TwoPlayer;
         }
         
-        auto gameScene = Game::createScene(type);
-        Director::getInstance()->replaceScene(gameScene);
+        // cut to GameScene
+        Director::getInstance()->replaceScene(TransitionFade::create(0.25, Game::createScene(OnePlayer), Color3B(255, 255, 255)));
     }
 }
 

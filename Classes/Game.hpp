@@ -33,6 +33,8 @@ private:
     void buildBackgroundSprite();
     // 复活次数
     int _resCount;
+    // 无敌状态
+    bool _birdUnrivalled;
     
     virtual void onEnterTransitionDidFinish();
     
