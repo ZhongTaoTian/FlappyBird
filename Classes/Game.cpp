@@ -8,6 +8,7 @@
 
 #include "Game.hpp"
 #include "PhysicsEdge.hpp"
+#include "TipsLayer.hpp"
 
 Scene* Game::createScene(PlayerType playerType)
 {
@@ -46,6 +47,10 @@ bool Game::init(PlayerType playerType)
     contactLisner->onContactBegin = CC_CALLBACK_1(Game::onContactBegan, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactLisner, this);
     
+    // add tips
+//    _tipsLayer = TipsLayer::create();
+//    addChild(_tipsLayer, 4);
+    
     return true;
 }
 
@@ -64,7 +69,15 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
         // start Fall
         _bird1->startFallAnimation([this](){
             // show revival view
-        
+            auto tipsLayer = TipsLayer::createTipsLayer(_resCount);
+            this->addChild(tipsLayer, 4);
+            tipsLayer->showResurrectionTipsView([this](){
+                CCLOG("Yes");
+            }, [this](){
+                CCLOG("NO");
+                _elementLayer->hiddenAllLabel();
+            }, 100);
+            
         });
     } else {
         

@@ -8,8 +8,8 @@
 
 #include "WaterPipe.hpp"
 
-#define kIntervalDistance (kWinSizeHeight * 0.25)
-#define kPipeLimitHeight  (kWinSizeHeight * 0.15)
+#define kIntervalDistance (kWinSizeHeight * 0.23)
+#define kPipeLimitHeight  (kWinSizeHeight * 0.135)
 
 // pipe_0.png
 bool WaterPipe::init(WaterPipeColorType color, float height)

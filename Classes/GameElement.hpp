@@ -25,10 +25,12 @@ public:
     static GameElement* createGameElementLayer(PlayerType type);
     void startMoveFloor();
     float _birdX;
-    
+   
     void startGame();
     void stopGame();
     void addWaterPipe(WaterPipeColorType color);
+    
+    void hiddenAllLabel();
 private:
     SpriteBatchNode* _batchNode;
     Land* _land;

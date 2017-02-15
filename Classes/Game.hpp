@@ -31,6 +31,8 @@ private:
     
     void showWaiting();
     void buildBackgroundSprite();
+    // 复活次数
+    int _resCount;
     
     virtual void onEnterTransitionDidFinish();
     

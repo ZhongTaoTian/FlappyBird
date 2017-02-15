@@ -73,7 +73,7 @@ bool GameElement::init(PlayerType type)
     auto passTexture = TextureCache().addImage("large_number_iphone.png");
     _passNum = LabelAtlas::create("0", "large_number_iphone.png", passTexture->getContentSize().width / 10, passTexture->getContentSize().height, '0');
     _passNum->setAnchorPoint(Vec2(0.5, 0.5));
-    _passNum->setPosition(kWinSizeWidth * 0.5, kWinSizeHeight * 0.76);
+    _passNum->setPosition(kWinSizeWidth * 0.5, kWinSizeHeight * 0.8);
     addChild(_passNum, 4);
     
     return true;
@@ -150,6 +150,13 @@ void GameElement::update(float dt)
             wp->removeFromParent();
         }
     }
+}
+
+void GameElement::hiddenAllLabel()
+{
+    _passNum->setVisible(false);
+    _goldCoinCount->setVisible(false);
+    _goldCoin->setVisible(false);
 }
 
         
