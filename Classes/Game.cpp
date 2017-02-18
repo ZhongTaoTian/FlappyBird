@@ -9,14 +9,15 @@
 #include "Game.hpp"
 #include "PhysicsEdge.hpp"
 #include "TipsLayer.hpp"
+#include "GameDataManager.hpp"
 
 Scene* Game::createScene(PlayerType playerType)
 {
     Scene *scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     // set Gravity acceleration
-    scene->getPhysicsWorld()->setGravity(Vec2(0, -1200));
+    scene->getPhysicsWorld()->setGravity(Vec2(0, -1400));
     
     auto gameLayer = Game::createGameLayer(playerType);
     if (gameLayer) {
@@ -46,17 +47,14 @@ bool Game::init(PlayerType playerType)
     auto contactLisner = EventListenerPhysicsContact::create();
     contactLisner->onContactBegin = CC_CALLBACK_1(Game::onContactBegan, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactLisner, this);
-    
-    // add tips
-//    _tipsLayer = TipsLayer::create();
-//    addChild(_tipsLayer, 4);
-    
+
     return true;
 }
 
 bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
 {
-    if (_gameOver || _birdUnrivalled) return false;
+    
+    if (_gameOver || _birdUnrivalled) return true;
     
     _gameOver = true;
     
@@ -74,15 +72,17 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
             tipsLayer->showResurrectionTipsView([this](){
                 // Resurrection
                 _bird1->birdResurrection(Vec2(kWinSizeWidth * 0.25, kWinSizeHeight * 0.5));
+                _bird1->click();
                 _elementLayer->birdResurrection([this](){
                     _birdUnrivalled = false;
-                    CCLOG("无敌时间结束");
+                    _bird1->setOpacity(255);
                 });
+                _resCount++;
                 _gameOver = false;
                 _birdUnrivalled = true;
             }, [this](){
                 _elementLayer->hiddenAllLabel();
-            }, 100, [](){
+            }, _elementLayer->getPassScore(), [](){
                 // player again
                 Director::getInstance()->replaceScene(TransitionFade::create(0.25, Game::createScene(OnePlayer), Color3B(255, 255, 255)));
                 
@@ -153,6 +153,13 @@ void Game::onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d:
     }
     
     _bird1->click();
+}
+
+void Game::onExit()
+{
+    Layer::onExit();
+    
+    GameDataManager::getInstance()->saveUserData();
 }
 
 void Game::startGame()

@@ -112,6 +112,12 @@ void GameElement::stopGame()
     unschedule(schedule_selector(GameElement::update));
 }
 
+// 获取
+int GameElement::getPassScore()
+{
+    return _passIndex;
+}
+
 void GameElement::birdResurrection(function<void ()> timeEnd)
 {
     _unTimeEnd = timeEnd;
@@ -165,7 +171,9 @@ void GameElement::update(float dt)
             if (wp->getPosition().x < _birdX) {
                 wp->_coin->setVisible(false);
                 
+#pragma mark - todo
                 // play sound effect
+                _passNum->setString(to_string(++_passIndex));
             }
         }
         if (wp->getPosition().x < 0 - wp->getContentSize().width) {

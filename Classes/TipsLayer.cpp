@@ -139,7 +139,7 @@ void TipsLayer::showGameOverTips(int score)
     auto board = addSpriteWithName("score_board.png", Vec2(kWinSizeWidth * 0.5, 0));
     board->setPosition(Vec2(kWinSizeWidth * 0.5, gameOver->getBoundingBox().getMidY() - gameOver->getContentSize().height * 0.5 - board->getContentSize().height * 0.5 - 30));
     
-    auto tmp = addBtn(kOkBtnTag, "ok_button.png", Vec2(board->getBoundingBox().getMinX() + 30, board->getBoundingBox().getMinY() - 20), Vec2(0, 1));
+    addBtn(kOkBtnTag, "ok_button.png", Vec2(board->getBoundingBox().getMinX() + 30, board->getBoundingBox().getMinY() - 20), Vec2(0, 1));
     addBtn(kShareBtnTag, "share_button.png", Vec2(board->getBoundingBox().getMaxX() - 40, board->getBoundingBox().getMinY() - 20), Vec2(1, 1));
     
     auto boardH = board->getContentSize().height;
@@ -151,7 +151,7 @@ void TipsLayer::showGameOverTips(int score)
     scoreLb->setPosition(Vec2(boardW * 0.86, boardH * 0.635));
     board->addChild(scoreLb);
     
-    auto bestLb = LabelAtlas::create("1000", "small_number_iphone.png", numTexture->getContentSize().width / 10, scoreLb->getContentSize().height, '0');
+    auto bestLb = LabelAtlas::create(to_string(score), "small_number_iphone.png", numTexture->getContentSize().width / 10, scoreLb->getContentSize().height, '0');
     bestLb->setAnchorPoint(Vec2(1, 0.5));
     bestLb->setPosition(Vec2(boardW * 0.86,boardH * 0.3));
     board->addChild(bestLb);

@@ -32,6 +32,8 @@ public:
     void addWaterPipe(WaterPipeColorType color);
     void hiddenAllLabel();
     
+    int getPassScore();
+    
 private:
     SpriteBatchNode* _batchNode;
     Land* _land;
@@ -52,6 +54,7 @@ private:
     
     LabelAtlas* _goldCoinCount;
     LabelAtlas* _passNum;
+    int _passIndex;
     
     virtual void update(float dt);
 };

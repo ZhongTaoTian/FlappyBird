@@ -37,6 +37,7 @@ private:
     bool _birdUnrivalled;
     
     virtual void onEnterTransitionDidFinish();
+    virtual void onExit();
     
     void onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event);
     bool onContactBegan(PhysicsContact& cat);
