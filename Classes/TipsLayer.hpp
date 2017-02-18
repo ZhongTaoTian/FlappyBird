@@ -42,9 +42,12 @@ private:
     void update(float dt);
     void showGameOverTips(int score);
     void continueGame();
+    int getResNeedCoinNum(int resCount);
     
     Sprite* addSpriteWithName(const std::string &name, Vec2 position);
     Node* addBtn(int tag, const std::string imageName, Vec2 position, Vec2 anchorPoint);
+    
+    void showGoidInsufficient();
 };
 
 #endif /* TipsLayer_hpp */

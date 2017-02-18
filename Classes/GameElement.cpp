@@ -7,6 +7,7 @@
 //
 
 #include "GameElement.hpp"
+#include "GameDataManager.hpp"
 
 GameElement* GameElement::createGameElementLayer(PlayerType type)
 {
@@ -55,16 +56,20 @@ bool GameElement::init(PlayerType type)
     _tipsTap2 = Sprite::createWithSpriteFrameName("tutorial2p.png");
     _tipsTap2->setPosition(kWinSizeWidth * 0.5, kWinSizeHeight * 0.28);
     _tipsTap2->setVisible(false);
-    addChild(_tipsTap2);
+    addChild(_tipsTap2, 5);
     
     // add goldCoin
     _goldCoin = Sprite::createWithSpriteFrameName("coin.png");
     _goldCoin->setAnchorPoint(Vec2(1, 0.5));
-    _goldCoin->setPosition(kWinSizeWidth * 0.72, kWinSizeHeight * 0.97 - _goldCoin->getContentSize().height * 0.5);
+    _goldCoin->setPosition(kWinSizeWidth * 0.8, kWinSizeHeight * 0.97 - _goldCoin->getContentSize().height * 0.5);
     this->addChild(_goldCoin, 4);
     
     auto numTexture = TextureCache().addImage("small_number_iphone.png");
-    _goldCoinCount = LabelAtlas::create("1000", "small_number_iphone.png", numTexture->getContentSize().width / 10, numTexture->getContentSize().height, '0');
+    auto picH = numTexture->getContentSize().height;
+    auto picW = numTexture->getContentSize().width;
+    int coinCount = GameDataManager::getInstance()->getAllCoinCount();
+
+    _goldCoinCount = LabelAtlas::create(to_string(coinCount), "small_number_iphone.png", picW * 0.1, picH, '0');
     _goldCoinCount->setAnchorPoint(Vec2(0, 0.5));
     _goldCoinCount->setPosition(_goldCoin->getPosition().x + 10, _goldCoin->getPosition().y);
     addChild(_goldCoinCount, 4);
@@ -174,6 +179,8 @@ void GameElement::update(float dt)
 #pragma mark - todo
                 // play sound effect
                 _passNum->setString(to_string(++_passIndex));
+                GameDataManager::getInstance()->addCoin();
+                _goldCoinCount->setString(to_string(GameDataManager::getInstance()->getAllCoinCount()));
             }
         }
         if (wp->getPosition().x < 0 - wp->getContentSize().width) {

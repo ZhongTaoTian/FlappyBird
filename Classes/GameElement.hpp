@@ -31,7 +31,7 @@ public:
     void birdResurrection(function<void ()> timeEnd);
     void addWaterPipe(WaterPipeColorType color);
     void hiddenAllLabel();
-    
+    LabelAtlas* _goldCoinCount;
     int getPassScore();
     
 private:
@@ -52,7 +52,7 @@ private:
     
     Vector<WaterPipe *>_waterPipes;
     
-    LabelAtlas* _goldCoinCount;
+    
     LabelAtlas* _passNum;
     int _passIndex;
     

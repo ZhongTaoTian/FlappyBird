@@ -4,9 +4,9 @@
 //
 //  Created by sfbest on 2017/2/14.
 //
-//
 
 #include "TipsLayer.hpp"
+#include "GameDataManager.hpp"
 
 #define kNoBtnTag 100
 #define kYesBtnTag 101
@@ -36,7 +36,9 @@ bool TipsLayer::init(int resCount)
     
     _yesBtn = Button::create();
     _yesBtn->setAnchorPoint(Vec2(0.5, 1));
-    _yesBtn->loadTextures("yes_5.png", "yes_5.png", "", TextureResType::PLIST);
+    char name[30];
+    sprintf(name, "yes_%d.png", getResNeedCoinNum(resCount));
+    _yesBtn->loadTextures(name, name, "", TextureResType::PLIST);
     _yesBtn->setVisible(false);
     _yesBtn->setTag(kYesBtnTag);
     _yesBtn->setPosition(Vec2(kWinSizeWidth * 0.5, _noBtn->getBoundingBox().getMinY() - 50));
@@ -52,6 +54,42 @@ bool TipsLayer::init(int resCount)
     _progress->setPosition(Vec2((_yesBtn->getContentSize().width - pic->getContentSize().width) * 0.5 + pic->getContentSize().width * 0.5, _yesBtn->getContentSize().height * 0.25));
     _yesBtn->addChild(_progress);
     return true;
+}
+
+int TipsLayer::getResNeedCoinNum(int resCount)
+{
+    int res = 5;
+    switch (resCount) {
+        case 0:
+            res = 5;
+            break;
+        case 1:
+            res = 10;
+            break;
+        case 2:
+            res = 20;
+            break;
+        case 3:
+            res = 50;
+            break;
+        case 4:
+            res = 100;
+            break;
+        case 5:
+            res = 200;
+            break;
+        case 6:
+            res = 300;
+            break;
+        case 7:
+            res = 500;
+            break;
+        default:
+            res = 1000;
+            break;
+    }
+    
+    return res;
 }
 
 TipsLayer *TipsLayer::createTipsLayer(int resCount)
@@ -85,9 +123,7 @@ void TipsLayer::update(float dt)
 {
     auto pro = _progress->getPercentage() - 0.5;
     if (pro <= 0) {
-        unschedule(schedule_selector(TipsLayer::update));
-        _noBtnClick();
-        showGameOverTips(_scroe);
+        buttonTouchCallback(_noBtn, Widget::TouchEventType::ENDED);
     }
     _progress->setPercentage(pro--);
 }
@@ -96,17 +132,30 @@ void TipsLayer::buttonTouchCallback(cocos2d::Ref *sender, Widget::TouchEventType
 {
     if (type == Widget::TouchEventType::ENDED) {
         auto btn = (Button *)sender;
-        
+
         switch (btn->getTag()) {
             case kNoBtnTag:
                 unschedule(schedule_selector(TipsLayer::update));
                 _noBtnClick();
+                GameDataManager::getInstance()->saveUserBestScore(_scroe);
                 showGameOverTips(_scroe);
+                GameDataManager::getInstance()->saveUserData();
+                
                 break;
             case kYesBtnTag:
+                
+                // 计算需要扣除的金币数量
                 unschedule(schedule_selector(TipsLayer::update));
-                _yesBtnClick();
-                this->removeFromParent();
+                
+                if (GameDataManager::getInstance()->getAllCoinCount() - getResNeedCoinNum(_resCount) >= 0) {
+                    this->removeFromParent();
+                    GameDataManager::getInstance()->spendCoinToResurrection(getResNeedCoinNum(_resCount));
+                    _yesBtnClick();
+                } else {
+                    // 提示金币不足
+                    this->showGoidInsufficient();
+                }
+
                 break;
             case kOkBtnTag:
                 if (_playAgain) {
@@ -146,12 +195,14 @@ void TipsLayer::showGameOverTips(int score)
     auto boardW = board->getContentSize().width;
     // add score label
     auto numTexture = TextureCache().addImage("small_number_iphone.png");
-    auto scoreLb = LabelAtlas::create(to_string(score), "small_number_iphone.png", numTexture->getContentSize().width / 10, numTexture->getContentSize().height, '0');
+    auto picW = numTexture->getContentSize().width;
+    auto picH = numTexture->getContentSize().height;
+    auto scoreLb = LabelAtlas::create(to_string(score), "small_number_iphone.png", picW * 0.1, picH, '0');
     scoreLb->setAnchorPoint(Vec2(1, 0.5));
     scoreLb->setPosition(Vec2(boardW * 0.86, boardH * 0.635));
     board->addChild(scoreLb);
     
-    auto bestLb = LabelAtlas::create(to_string(score), "small_number_iphone.png", numTexture->getContentSize().width / 10, scoreLb->getContentSize().height, '0');
+    auto bestLb = LabelAtlas::create(to_string(GameDataManager::getInstance()->getBestScore()), "small_number_iphone.png", picW * 0.1, picH, '0');
     bestLb->setAnchorPoint(Vec2(1, 0.5));
     bestLb->setPosition(Vec2(boardW * 0.86,boardH * 0.3));
     board->addChild(bestLb);
@@ -204,6 +255,12 @@ Node* TipsLayer::addBtn(int tag, const std::string imageName, cocos2d::Vec2 posi
     _scoreLayer->addChild(btn);
     
     return btn;
+}
+
+#pragma mark - todo 购买金币
+void TipsLayer::showGoidInsufficient()
+{
+    
 }
 
 

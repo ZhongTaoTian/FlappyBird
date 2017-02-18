@@ -73,6 +73,7 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
                 // Resurrection
                 _bird1->birdResurrection(Vec2(kWinSizeWidth * 0.25, kWinSizeHeight * 0.5));
                 _bird1->click();
+                _elementLayer->_goldCoinCount->setString(to_string(GameDataManager::getInstance()->getAllCoinCount()));
                 _elementLayer->birdResurrection([this](){
                     _birdUnrivalled = false;
                     _bird1->setOpacity(255);
@@ -124,8 +125,16 @@ void Game::buildBackgroundSprite()
     
     // add bird
     _bird1 = Bird::createBird();
-    _bird1->setPosition(Vec2(kWinSizeWidth * 0.25, kWinSizeHeight * 0.5));
+    _bird1->setPosition(Vec2(kWinSizeWidth * 0.3, kWinSizeHeight * 0.5));
     this->addChild(_bird1, 3);
+    
+    if (_playerType == TwoPlayer) {
+        // vs model
+        _bird2 = Bird::createBird(_bird1->color);
+        _bird2->setPosition(Vec2(kWinSizeWidth * 0.3, kWinSizeHeight * 0.5));
+        _bird1->setPosition(Vec2(kWinSizeWidth * 0.15, _bird1->getPosition().y));
+        this->addChild(_bird2, 3);
+    }
     
     _elementLayer->_birdX = _bird1->getPosition().x;
 }
@@ -139,7 +148,12 @@ void Game::onEnterTransitionDidFinish()
     
     // bird Fly
     _bird1->startFlyAnimation();
-    _bird1->startShakeAnimation();
+    _bird1->startShakeAnimation(1);
+    
+    if (_playerType == TwoPlayer) {
+        _bird2->startFlyAnimation();
+        _bird2->startShakeAnimation(2);
+    }
 }
 
 #pragma mark - Touch Action
@@ -150,9 +164,27 @@ void Game::onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d:
     if (!_gameIsStarting) {
         _gameIsStarting = true;
         startGame();
+        
+        if (_playerType == PlayerType::TwoPlayer) {
+            _bird1->click();
+            _bird2->click();
+            return;
+        }
     }
     
-    _bird1->click();
+    if (_playerType == PlayerType::OnePlayer) {
+        _bird1->click();
+    } else {
+        // 对战模式 判断点击的点在屏幕哪边
+        for (int i = 0; i < touches.size(); i++) {
+            auto touch = touches[i];
+            if (touch->getLocation().x <= kWinSizeWidth * 0.5) {
+                _bird1->click();
+            } else {
+                _bird2->click();
+            }
+        }
+    }
 }
 
 void Game::onExit()

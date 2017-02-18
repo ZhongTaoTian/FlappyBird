@@ -94,13 +94,18 @@ void Bird::startFallAnimation(AnimEnd animEnd)
     this->runAction(Sequence::create(Spawn::create(move, rota, NULL), callback, NULL));
 }
 
-void Bird::startShakeAnimation()
+void Bird::startShakeAnimation(int birdNum)
 {
     if (isShakeing) return;
 
+    float moveDis = 20;
+    if (birdNum == 2) {
+        moveDis = -20;
+    }
+    
     auto durtion = 0.7;
-    auto moveUp = MoveTo::create(durtion, Vec2(getPosition().x, getPosition().y + 20));
-    auto moveDown = MoveTo::create(durtion, Vec2(getPosition().x, getPosition().y - 20));
+    auto moveUp = MoveTo::create(durtion, Vec2(getPosition().x, getPosition().y + moveDis));
+    auto moveDown = MoveTo::create(durtion, Vec2(getPosition().x, getPosition().y - moveDis));
     RepeatForever *anim = RepeatForever::create(Sequence::create(moveUp, moveDown, NULL));
     anim->setTag(kBirdShakeTag);
     runAction(anim);

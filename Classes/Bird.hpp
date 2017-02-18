@@ -33,7 +33,7 @@ public:
     AnimEnd _end;
     
     void startFallAnimation(AnimEnd animEnd);
-    void startShakeAnimation();
+    void startShakeAnimation(int birdNum);
     void click();
     void birdResurrection(Vec2 position);
     

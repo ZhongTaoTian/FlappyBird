@@ -70,7 +70,7 @@ void SelectPlayer::buttonTouchCallback(Ref *sender, Widget::TouchEventType type)
         }
         
         // cut to GameScene
-        Director::getInstance()->replaceScene(TransitionFade::create(0.25, Game::createScene(OnePlayer), Color3B(255, 255, 255)));
+        Director::getInstance()->replaceScene(TransitionFade::create(0.25, Game::createScene(type), Color3B(255, 255, 255)));
     }
 }
 
