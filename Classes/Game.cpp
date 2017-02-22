@@ -15,11 +15,13 @@
 #define kPauseImageName "pause_button.png"
 #define kPlayImageName "play_button.png"
 
+#define kBird1Tag 40
+#define kBird2Tag 50
+
 Scene* Game::createScene(PlayerType playerType)
 {
     Scene *scene = Scene::createWithPhysics();
-    //    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-    
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     // set Gravity acceleration
     scene->getPhysicsWorld()->setGravity(Vec2(0, -1400));
     
@@ -82,6 +84,17 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
     
     if (_gameOver || _birdUnrivalled) return true;
     
+    // 判断是不是鸟
+    //    if (_playerType == OnePlayer) {
+    //        if (!(cat.getShapeA()->getBody()->getNode()->getTag() == kBird1Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird1Tag)) {
+    //            return true;
+    //        }
+    //    } else {
+    //        if (!(cat.getShapeA()->getBody()->getNode()->getTag() == kBird1Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird1Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird2Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird2Tag)) {
+    //            return true;
+    //        }
+    //    }
+    
     _gameOver = true;
     
 #warning play sound effect
@@ -120,6 +133,20 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
             
         });
     } else {
+        bool firstWin = false;
+        // 判断是哪一个鸟被撞了
+        if (cat.getShapeA()->getBody()->getNode()->getTag() == kBird1Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird1Tag) {
+            _bird1->stopFlyAndRotatoAnimation();
+            _bird2->stopRatatoAnimation();
+        } else if (cat.getShapeB()->getBody()->getNode()->getTag() == kBird2Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird2Tag) {
+            _bird2->stopFlyAndRotatoAnimation();
+            _bird1->stopRatatoAnimation();
+            firstWin = false;
+        }
+        
+        _bird1->getPhysicsBody()->removeFromWorld();
+        _bird2->getPhysicsBody()->removeFromWorld();
+        
         
     }
     
@@ -152,15 +179,19 @@ void Game::buildBackgroundSprite()
     // add bird
     _bird1 = Bird::createBird();
     _bird1->setPosition(Vec2(kWinSizeWidth * 0.3, kWinSizeHeight * 0.5));
+    _bird1->setTag(kBird1Tag);
     this->addChild(_bird1, 3);
     
     if (_playerType == TwoPlayer) {
         // vs model
         _bird2 = Bird::createBird(_bird1->color);
         _bird2->setPosition(Vec2(kWinSizeWidth * 0.3, kWinSizeHeight * 0.5));
+        _bird2->setTag(kBird2Tag);
         _bird1->setPosition(Vec2(kWinSizeWidth * 0.15, _bird1->getPosition().y));
         this->addChild(_bird2, 3);
     }
+    
+    _pH = kWinSizeHeight;
     
     _elementLayer->_birdX = _bird1->getPosition().x;
 }
@@ -231,6 +262,8 @@ void Game::startGame()
     // setPipeColor
     _pipeType = WaterPipeColorType(arc4random_uniform(3));
     _elementLayer->addWaterPipe(_pipeType);
+    
+    schedule(schedule_selector(Game::update), 1 / 60.0f);
 }
 
 void Game::pauseGame()
@@ -315,3 +348,19 @@ void Game::resumeGame()
     countDown->runAction(Sequence::create(DelayTime::create(1), call2, DelayTime::create(1), call1, DelayTime::create(1), call, NULL));
 }
 
+void Game::update(float dt)
+{
+    // 这里稍微解决physicsworld刚体被穿透加的判断,physicsworld内有点问题,速度很快的物体有时候会穿透刚体或者卡住刚体的内部
+    // 感觉没有Box2d好用一些,box2d可以设置刚体bullet属性,以便更加精确的计算碰撞
+    // 实际项开发中,碰撞的检查需要加入更加精确的判断以及动画 已达到所需求的完美样子
+    if (_bird1->getPosition().y > _pH) {
+        _bird1->setPosition(Vec2(_bird1->getPosition().x, kWinSizeHeight - _bird1->getContentSize().height));
+    }
+    
+    if (_playerType == TwoPlayer) {
+        if (_bird2->getPosition().y > _pH) {
+            _bird2->setPosition(Vec2(_bird2->getPosition().x, kWinSizeHeight - _bird2->getContentSize().height));
+        }
+    }
+    
+}

@@ -150,7 +150,7 @@ void GameElement::update(float dt)
     
     _index++;
     
-    if (_index == 135) {
+    if (_index == 1000000) {
         // add water pipe
         _index = 0;
         auto wp = WaterPipe::createWaterPipe(_wpColor, _wpHeight);

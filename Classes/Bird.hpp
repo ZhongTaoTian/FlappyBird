@@ -30,6 +30,7 @@ public:
     void startFlyAnimation();
     void stopFlyAnimation();
     void stopFlyAndRotatoAnimation();
+    void stopRatatoAnimation();
     AnimEnd _end;
     
     void startFallAnimation(AnimEnd animEnd);

@@ -69,6 +69,11 @@ void Bird::stopFlyAndRotatoAnimation()
     stopActionByTag(kBirdRotatoTag);
 }
 
+void Bird::stopRatatoAnimation()
+{
+    stopActionByTag(kBirdRotatoTag);
+}
+
 void Bird::stopFlyAnimation()
 {
     stopActionByTag(kBirdFlyTag);

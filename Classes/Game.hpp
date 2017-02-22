@@ -42,11 +42,15 @@ private:
     bool _birdUnrivalled;
     bool _btnSelected;
     
+    float _pH;
+    
     virtual void onEnterTransitionDidFinish();
     virtual void onExit();
     
     void onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event);
     bool onContactBegan(PhysicsContact& cat);
+    
+    void update(float dt);
     
     void startGame();
     void pauseGame();
