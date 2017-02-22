@@ -10,11 +10,15 @@
 #include "PhysicsEdge.hpp"
 #include "TipsLayer.hpp"
 #include "GameDataManager.hpp"
+#include "SelectPlayer.hpp"
+
+#define kPauseImageName "pause_button.png"
+#define kPlayImageName "play_button.png"
 
 Scene* Game::createScene(PlayerType playerType)
 {
     Scene *scene = Scene::createWithPhysics();
-//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    //    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     
     // set Gravity acceleration
     scene->getPhysicsWorld()->setGravity(Vec2(0, -1400));
@@ -47,7 +51,29 @@ bool Game::init(PlayerType playerType)
     auto contactLisner = EventListenerPhysicsContact::create();
     contactLisner->onContactBegin = CC_CALLBACK_1(Game::onContactBegan, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactLisner, this);
-
+    
+    //btn->loadTextures(imageName, imageName, "", TextureResType::PLIST);
+    _pauseBtn = Button::create();
+    _pauseBtn->loadTextures(kPauseImageName, kPauseImageName, kPauseImageName, TextureResType::PLIST);
+    _pauseBtn->setAnchorPoint(Vec2(0, 1));
+    _pauseBtn->setPosition(Vec2(20, kWinSizeHeight - 35));
+    _pauseBtn->setVisible(false);
+    _pauseBtn->addTouchEventListener([this](Ref *ref, Widget::TouchEventType type){
+        if (type == Widget::TouchEventType::ENDED) {
+            _btnSelected = !_btnSelected;
+            if (_btnSelected) {
+                // pause
+                _pauseBtn->loadTextures(kPlayImageName, kPlayImageName, kPlayImageName, TextureResType::PLIST);
+                pauseGame();
+            } else {
+                // play
+                _pauseBtn->loadTextures(kPauseImageName, kPauseImageName, kPauseImageName, TextureResType::PLIST);
+                resumeGame();
+            }
+        }
+    });
+    addChild(_pauseBtn, 1000);
+    
     return true;
 }
 
@@ -196,13 +222,96 @@ void Game::onExit()
 
 void Game::startGame()
 {
-     // start Refresh Time
+    // showpauseBtn
+    _pauseBtn->setVisible(true);
+    
+    // start Refresh Time
     _elementLayer->startGame();
     
     // setPipeColor
     _pipeType = WaterPipeColorType(arc4random_uniform(3));
     _elementLayer->addWaterPipe(_pipeType);
-
 }
 
+void Game::pauseGame()
+{
+    Director::getInstance()->pause();
+    if (_bird1->getPhysicsBody()->isEnabled()) {
+        _bird1->getPhysicsBody()->setEnabled(false);
+    }
+    
+    if (_playerType == TwoPlayer) {
+        _bird2->getPhysicsBody()->setEnabled(false);
+    }
+    
+    // show coverLayer
+    auto cover = LayerColor::create(Color4B::BLACK);
+    cover->setOpacity(120);
+    cover->setTag(10086);
+    addChild(cover, _pauseBtn->getLocalZOrder() - 1);
+    
+    auto homeBtn = Button::create();
+    homeBtn->loadTextures("home_button.png", "home_button.png", "home_button.png", TextureResType::PLIST);
+    homeBtn->setPosition(kWinSize * 0.5);
+    cover->addChild(homeBtn);
+    homeBtn->addTouchEventListener([this](Ref *ref, Widget::TouchEventType type){
+        if (type == Widget::TouchEventType::ENDED) {
+            Director::getInstance()->resume();
+            Director::getInstance()->replaceScene(TransitionFade::create(0.25, SelectPlayer::createScene(), Color3B(255, 255, 255)));
+        }
+    });
+}
+
+void Game::resumeGame()
+{
+    removeChildByTag(10086);
+    
+    if (_gameOver) {
+        Director::getInstance()->resume();
+        return;
+    }
+    Director::getInstance()->resume();
+    
+    _bird1->pause();
+    if (_playerType == TwoPlayer) {
+        _bird2->pause();
+    }
+    _elementLayer->pauseGame();
+    
+    // show resume count down
+    auto picTexture = TextureCache().addImage("large_number_iphone.png");
+    auto countDown = LabelAtlas::create("3", "large_number_iphone.png", picTexture->getContentSize().width / 10, picTexture->getContentSize().height, '0');
+    countDown->setAnchorPoint(Vec2(0.5, 0.5));
+    countDown->setTag(1232);
+    countDown->setPosition(kWinSizeWidth * 0.5, kWinSizeHeight * 0.5);
+    addChild(countDown, 10000);
+    auto call2 = CallFunc::create([this](){
+        auto c = getChildByTag<LabelAtlas *>(1232);
+        c->setString("2");
+    });
+    
+    auto call1 = CallFunc::create([this](){
+        auto c = getChildByTag<LabelAtlas *>(1232);
+        c->setString("1");
+    });
+    
+    auto call = CallFunc::create([this](){
+        auto c = getChildByTag<LabelAtlas *>(1232);
+        c->removeFromParent();
+        
+        _bird1->resume();
+        if (_playerType == TwoPlayer) {
+            _bird2->resume();
+        }
+        
+        _elementLayer->resumeGame();
+        
+        _bird1->getPhysicsBody()->setEnabled(true);
+        if (_playerType == TwoPlayer) {
+            _bird2->getPhysicsBody()->setEnabled(true);
+        }
+    });
+    
+    countDown->runAction(Sequence::create(DelayTime::create(1), call2, DelayTime::create(1), call1, DelayTime::create(1), call, NULL));
+}
 

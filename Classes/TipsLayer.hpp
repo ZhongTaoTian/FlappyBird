@@ -23,7 +23,7 @@ public:
     static TipsLayer* createTipsLayer(int resCount);
 
     void showResurrectionTipsView(Callback yesBtnClick, Callback noBtnClick, int score, Callback playAgain, Callback share);
-   
+    
 private:
     Sprite* _resurrection;
     Button* _noBtn;

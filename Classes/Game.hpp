@@ -14,6 +14,10 @@
 #include "Bird.hpp"
 #include "GameElement.hpp"
 
+#include "ui/CocosGUI.h"
+
+using namespace ui;
+
 class Game:public Layer {
 public:
     static Scene* createScene(PlayerType playerType);
@@ -28,6 +32,7 @@ private:
     bool _gameIsStarting;
     WaterPipeColorType _pipeType;
     bool _gameOver;
+    Button* _pauseBtn;
     
     void showWaiting();
     void buildBackgroundSprite();
@@ -35,13 +40,17 @@ private:
     int _resCount;
     // 无敌状态
     bool _birdUnrivalled;
+    bool _btnSelected;
     
     virtual void onEnterTransitionDidFinish();
     virtual void onExit();
     
     void onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event);
     bool onContactBegan(PhysicsContact& cat);
+    
     void startGame();
+    void pauseGame();
+    void resumeGame();
 };
 
 

@@ -196,6 +196,15 @@ void GameElement::hiddenAllLabel()
     _passNum->setVisible(false);
 }
 
+void GameElement::pauseGame()
+{
+    pause();
+    _land->pause();
+}
 
-
+void GameElement::resumeGame()
+{
+    resume();
+    _land->resume();
+}
 

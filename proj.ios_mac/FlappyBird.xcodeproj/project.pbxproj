@@ -52,7 +52,7 @@
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		B333D40C1E5D6182000AEA51 /* AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = B333D40B1E5D6182000AEA51 /* AlertView.m */; };
 		B36402FD1E519BCF0010A23F /* WaterPipe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B36402FB1E519BCF0010A23F /* WaterPipe.cpp */; };
-		B36403011E52F8CB0010A23F /* TipsLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B36402FF1E52F8CB0010A23F /* TipsLayer.cpp */; };
+		B36403011E52F8CB0010A23F /* TipsLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B36402FF1E52F8CB0010A23F /* TipsLayer.mm */; };
 		B397BAE91E4AF54E0075A718 /* SelectPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B397BAE71E4AF54E0075A718 /* SelectPlayer.cpp */; };
 		B397BAF31E4C1EAC0075A718 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B397BAF11E4C1EAC0075A718 /* Game.cpp */; };
 		B397BAF61E4C45720075A718 /* Land.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B397BAF41E4C45720075A718 /* Land.cpp */; };
@@ -122,7 +122,7 @@
 		B333D40B1E5D6182000AEA51 /* AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertView.m; sourceTree = "<group>"; };
 		B36402FB1E519BCF0010A23F /* WaterPipe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterPipe.cpp; sourceTree = "<group>"; };
 		B36402FC1E519BCF0010A23F /* WaterPipe.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WaterPipe.hpp; sourceTree = "<group>"; };
-		B36402FF1E52F8CB0010A23F /* TipsLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TipsLayer.cpp; sourceTree = "<group>"; };
+		B36402FF1E52F8CB0010A23F /* TipsLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TipsLayer.mm; sourceTree = "<group>"; };
 		B36403001E52F8CB0010A23F /* TipsLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TipsLayer.hpp; sourceTree = "<group>"; };
 		B397BAE71E4AF54E0075A718 /* SelectPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectPlayer.cpp; sourceTree = "<group>"; };
 		B397BAE81E4AF54E0075A718 /* SelectPlayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SelectPlayer.hpp; sourceTree = "<group>"; };
@@ -287,7 +287,7 @@
 				B3D6ECEC1E4DA3300003B568 /* PhysicsEdge.hpp */,
 				B36402FB1E519BCF0010A23F /* WaterPipe.cpp */,
 				B36402FC1E519BCF0010A23F /* WaterPipe.hpp */,
-				B36402FF1E52F8CB0010A23F /* TipsLayer.cpp */,
+				B36402FF1E52F8CB0010A23F /* TipsLayer.mm */,
 				B36403001E52F8CB0010A23F /* TipsLayer.hpp */,
 				FACA76471E5807EA000AA5CE /* GameDataManager.cpp */,
 				FACA76481E5807EA000AA5CE /* GameDataManager.hpp */,
@@ -479,7 +479,7 @@
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				B3D6ECDE1E4C5A070003B568 /* Bird.cpp in Sources */,
-				B36403011E52F8CB0010A23F /* TipsLayer.cpp in Sources */,
+				B36403011E52F8CB0010A23F /* TipsLayer.mm in Sources */,
 				B3D6ECE11E4C67E10003B568 /* GameElement.cpp in Sources */,
 				B397BAF61E4C45720075A718 /* Land.cpp in Sources */,
 				B397BAE91E4AF54E0075A718 /* SelectPlayer.cpp in Sources */,

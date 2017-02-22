@@ -34,6 +34,9 @@ public:
     LabelAtlas* _goldCoinCount;
     int getPassScore();
     
+    void pauseGame();
+    void resumeGame();
+    
 private:
     SpriteBatchNode* _batchNode;
     Land* _land;

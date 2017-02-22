@@ -8,6 +8,13 @@
 #include "TipsLayer.hpp"
 #include "GameDataManager.hpp"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+
+#include "AlertView.h"
+
+#endif
+
+
 #define kNoBtnTag 100
 #define kYesBtnTag 101
 #define kOkBtnTag 102
@@ -132,7 +139,7 @@ void TipsLayer::buttonTouchCallback(cocos2d::Ref *sender, Widget::TouchEventType
 {
     if (type == Widget::TouchEventType::ENDED) {
         auto btn = (Button *)sender;
-
+        
         switch (btn->getTag()) {
             case kNoBtnTag:
                 unschedule(schedule_selector(TipsLayer::update));
@@ -155,7 +162,7 @@ void TipsLayer::buttonTouchCallback(cocos2d::Ref *sender, Widget::TouchEventType
                     // 提示金币不足
                     this->showGoidInsufficient();
                 }
-
+                
                 break;
             case kOkBtnTag:
                 if (_playAgain) {
@@ -224,7 +231,7 @@ void TipsLayer::showGameOverTips(int score)
     
     // start animation
     auto move = MoveTo::create(0.5, Vec2(0, 0));
-
+    
     auto anim = Sequence::create(move, DelayTime::create(0.2), CallFunc::create([this](){
         auto btn1 = _scoreLayer->getChildByTag(kOkBtnTag);
         auto btn2 = _scoreLayer->getChildByTag(kShareBtnTag);
@@ -257,10 +264,27 @@ Node* TipsLayer::addBtn(int tag, const std::string imageName, cocos2d::Vec2 posi
     return btn;
 }
 
-#pragma mark - todo 购买金币
 void TipsLayer::showGoidInsufficient()
 {
+    int needCoin = getResNeedCoinNum(_resCount);
+    int hasCoin = GameDataManager::getInstance()->getAllCoinCount();
     
+    // iOS code
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    NSString *message = [NSString stringWithFormat:@"你有%d个金币,复活需要%d个金币\n购买金币!", hasCoin, needCoin];
+    AlertView *alert = [[AlertView alloc] initWithTitle:@"金币不足" message:message cancelButtonTitle:@"取消" okButtonTitle:@"购买" oklClick:^{
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/ZhongTaoTian"]];
+                                        GameDataManager::getInstance()->setAllCoinCount(1000);
+                        } cancelClick:^{
+                        schedule(schedule_selector(TipsLayer::update), 1 / 60.0f);
+                        }];
+    [alert show];
+#endif
+    
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    // Android code
+    
+#endif
 }
 
 
