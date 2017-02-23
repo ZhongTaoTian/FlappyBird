@@ -2,7 +2,7 @@
 //  TipsLayer.hpp
 //  FlappyBird
 //
-//  Created by sfbest on 2017/2/14.
+//  Created by 维尼的小熊 on 2017/2/14.
 //
 //  Resurrection,Share,PlayAgain.
 
@@ -51,6 +51,7 @@ private:
     Node* addBtn(int tag, const std::string imageName, Vec2 position, Vec2 anchorPoint);
     
     void showGoidInsufficient();
+    Animate* starTwinkleAnimate();
 };
 
 #endif /* TipsLayer_hpp */

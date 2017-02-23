@@ -2,7 +2,7 @@
 //  TipsLayer.cpp
 //  FlappyBird
 //
-//  Created by sfbest on 2017/2/14.
+//  Created by 维尼的小熊 on 2017/2/14.
 //
 
 #include "TipsLayer.hpp"
@@ -196,7 +196,6 @@ void TipsLayer::showGameOverTips(int score)
     _noBtn->setVisible(false);
     _yesBtn->setVisible(false);
     
-
     buildScoreUI(score, true, false);
 }
 
@@ -237,22 +236,32 @@ void TipsLayer::buildScoreUI(int score, bool isOnePlayer, bool isLeftWin)
     board->addChild(bestLb);
     
     string name;
-    if (score >= 0 && score < 100) {
+    if (score >= 0 && score < 50) {
         name = "bronze_medal.png";
-    } else if (score >= 100 && score < 200) {
+    } else if (score >= 50 && score < 100) {
+        name = "silver_medal.png";
+    } else if (score >= 100 && score < 150) {
         name = "platinum_medal.png";
-    } else if (score >= 200) {
+    } else {
         name = "gold_medal.png";
     }
     
-    if (name.length() > 0) {
-        auto madel = Sprite::createWithSpriteFrameName(name);
-        madel->setPosition(boardW * 0.22, boardH * 0.47);
-        board->addChild(madel);
-        
-        // play star anim
-        
-    }
+    auto medal = Sprite::createWithSpriteFrameName(name);
+    medal->setPosition(boardW * 0.22, boardH * 0.47);
+    board->addChild(medal);
+    
+    Sprite *star1 = Sprite::createWithSpriteFrameName("star_0.png");
+    Sprite *star2 = Sprite::createWithSpriteFrameName("star_0.png");
+    Sprite *star3 = Sprite::createWithSpriteFrameName("star_0.png");
+    star1->setPosition(medal->getContentSize().width * 0.3, medal->getContentSize().height * 0.25);
+    star2->setPosition(medal->getContentSize().width * 0.75, medal->getContentSize().height * 0.5);
+    star3->setPosition(medal->getContentSize().width * 0.4, medal->getContentSize().height * 0.8);
+    medal->addChild(star1);
+    medal->addChild(star2);
+    medal->addChild(star3);
+    star1->runAction(RepeatForever::create(Sequence::create(starTwinkleAnimate(), DelayTime::create(0.3), nil)));
+    star2->runAction(RepeatForever::create(Sequence::create(DelayTime::create(0.1), starTwinkleAnimate(), nil)));
+    star3->runAction(RepeatForever::create(Sequence::create(DelayTime::create(0.2), starTwinkleAnimate(), nil)));
     
     // start animation
     auto move = MoveTo::create(0.5, Vec2(0, 0));
@@ -273,6 +282,24 @@ Sprite* TipsLayer::addSpriteWithName(const std::string &name, Vec2 position)
     sp->setPosition(position);
     _scoreLayer->addChild(sp);
     return sp;
+}
+
+Animate* TipsLayer::starTwinkleAnimate()
+{
+    Vector<SpriteFrame *> frames;
+    for (int i = 0; i < 3; i++) {
+        char name[20];
+        sprintf(name, "star_%d.png", i);
+        auto sf = SpriteFrameCache::getInstance()->getSpriteFrameByName(name);
+        frames.pushBack(sf);
+    }
+    
+    // play star anim
+    auto an = Animation::createWithSpriteFrames(frames);
+    an->setDelayPerUnit(0.1);
+    an->setRestoreOriginalFrame(true);
+    auto starAnim = Animate::create(an);
+    return starAnim;
 }
 
 Node* TipsLayer::addBtn(int tag, const std::string imageName, cocos2d::Vec2 position, Vec2 anchorPoint)

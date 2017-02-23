@@ -2,7 +2,7 @@
 //  GameDataManager.cpp
 //  FlappyBird
 //
-//  Created by MacBook on 17/2/18.
+//  Created by 维尼的小熊 on 17/2/18.
 //
 //
 

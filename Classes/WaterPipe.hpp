@@ -2,7 +2,7 @@
 //  WaterPipe.hpp
 //  FlappyBird
 //
-//  Created by sfbest on 2017/2/13.
+//  Created by 维尼的小熊 on 2017/2/13.
 //
 //
 
@@ -33,6 +33,9 @@ public:
     Sprite *_coin;
     void setChildPhysicsBodyEnabled(bool enabled);
     
+    void pause();
+    void resume();
+    
 private:
     Sprite *_topPipe;
     Sprite *_bottomPipe;
@@ -41,6 +44,11 @@ private:
     
     char fileName[30];
     WaterPipeType type;
+    bool _showCoin;
+    float _topMoveDis;
+    float _bottomMoveDis;
+    
+    virtual void onEnterTransitionDidFinish();
     
 };
 

@@ -2,7 +2,7 @@
 //  PhysicsEdge.hpp
 //  FlappyBird
 //
-//  Created by sfbest on 2017/2/10.
+//  Created by 维尼的小熊 on 2017/2/10.
 //
 //  topPhysicsEdge
 

@@ -2,7 +2,7 @@
 //  SelectPlayer.cpp
 //  FlappyBird
 //
-//  Created by sfbest on 2017/2/8.
+//  Created by 维尼的小熊 on 2017/2/8.
 //
 //  SelectModelScene
 

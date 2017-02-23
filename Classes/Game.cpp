@@ -2,7 +2,7 @@
 //  Game.cpp
 //  FlappyBird
 //
-//  Created by sfbest on 2017/2/9.
+//  Created by 维尼的小熊 on 2017/2/9.
 //
 //  GameCenter
 
