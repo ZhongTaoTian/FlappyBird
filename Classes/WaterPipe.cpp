@@ -9,10 +9,10 @@
 #include "WaterPipe.hpp"
 
 #define kIntervalDistance (kWinSizeHeight * 0.23)
-#define kPipeLimitHeight  (kWinSizeHeight * 0.135)
+#define kPipeLimitHeight  (kWinSizeHeight * 0.15)
 
 // pipe_0.png
-bool WaterPipe::init(WaterPipeColorType color, float height)
+bool WaterPipe::init(WaterPipeColorType color, float height, bool showCoin)
 {
     Layer::init();
     
@@ -58,7 +58,11 @@ bool WaterPipe::init(WaterPipeColorType color, float height)
 
     _coin = Sprite::createWithSpriteFrameName("coin.png");
     _coin->setPosition(Vec2(_topPipe->getContentSize().width * 0.5, _bottomPipe->getBoundingBox().getMaxY() + kPipeLimitHeight * 0.5 + _coin->getContentSize().height * 0.5));
+    if (!showCoin) {
+        _coin->setOpacity(0);
+    }
     addChild(_coin);
+    
 
     this->setContentSize(Size(_topPipe->getContentSize().width, height));
     this->setAnchorPoint(Vec2(1, 0));
@@ -66,10 +70,10 @@ bool WaterPipe::init(WaterPipeColorType color, float height)
     return true;
 }
 
-WaterPipe* WaterPipe::createWaterPipe(WaterPipeColorType color, float height)
+WaterPipe* WaterPipe::createWaterPipe(WaterPipeColorType color, float height, bool showCoin)
 {
     auto wp = new WaterPipe();
-    if (wp && wp->init(color, height)) {
+    if (wp && wp->init(color, height, showCoin)) {
         wp->autorelease();
     } else {
         delete wp;

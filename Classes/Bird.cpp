@@ -133,7 +133,7 @@ void Bird::click()
 {
     stopShakeAnimation();
 
-    getPhysicsBody()->setVelocity(Vec2(0, 700));
+    getPhysicsBody()->setVelocity(Vec2(0, 600));
     
     // click bird rotate action
     stopActionByTag(kBirdRotatoTag);

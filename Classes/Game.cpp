@@ -21,7 +21,7 @@
 Scene* Game::createScene(PlayerType playerType)
 {
     Scene *scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    //    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     // set Gravity acceleration
     scene->getPhysicsWorld()->setGravity(Vec2(0, -1400));
     
@@ -85,15 +85,15 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
     if (_gameOver || _birdUnrivalled) return true;
     
     // 判断是不是鸟
-    //    if (_playerType == OnePlayer) {
-    //        if (!(cat.getShapeA()->getBody()->getNode()->getTag() == kBird1Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird1Tag)) {
-    //            return true;
-    //        }
-    //    } else {
-    //        if (!(cat.getShapeA()->getBody()->getNode()->getTag() == kBird1Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird1Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird2Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird2Tag)) {
-    //            return true;
-    //        }
-    //    }
+    if (_playerType == OnePlayer) {
+        if (!(cat.getShapeA()->getBody()->getNode()->getTag() == kBird1Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird1Tag)) {
+            return true;
+        }
+    } else {
+        if (!(cat.getShapeA()->getBody()->getNode()->getTag() == kBird1Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird1Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird2Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird2Tag)) {
+            return true;
+        }
+    }
     
     _gameOver = true;
     
@@ -141,13 +141,25 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
         } else if (cat.getShapeB()->getBody()->getNode()->getTag() == kBird2Tag || cat.getShapeB()->getBody()->getNode()->getTag() == kBird2Tag) {
             _bird2->stopFlyAndRotatoAnimation();
             _bird1->stopRatatoAnimation();
-            firstWin = false;
+            firstWin = true;
         }
         
         _bird1->getPhysicsBody()->removeFromWorld();
         _bird2->getPhysicsBody()->removeFromWorld();
         
-        
+        auto fallBird = firstWin ? _bird2 : _bird1;
+        fallBird->startFallAnimation([this, firstWin](){
+            _elementLayer->hiddenAllLabel();
+            
+            auto tipsLayer = TipsLayer::createTipsLayer(0, false);
+            this->addChild(tipsLayer, 4);
+            tipsLayer->showVsResultTipsView([](){
+                // player again
+                Director::getInstance()->replaceScene(TransitionFade::create(0.25, Game::createScene(TwoPlayer), Color3B(255, 255, 255)));
+            }, [](){
+            
+            }, _elementLayer->getPassScore(), firstWin);
+        });
     }
     
     _elementLayer->stopGame();
@@ -189,11 +201,13 @@ void Game::buildBackgroundSprite()
         _bird2->setTag(kBird2Tag);
         _bird1->setPosition(Vec2(kWinSizeWidth * 0.15, _bird1->getPosition().y));
         this->addChild(_bird2, 3);
+        _elementLayer->_birdX = _bird2->getPosition().x;
+    } else {
+        _elementLayer->_birdX = _bird1->getPosition().x;
     }
     
     _pH = kWinSizeHeight;
-    
-    _elementLayer->_birdX = _bird1->getPosition().x;
+
 }
 
 void Game::onEnterTransitionDidFinish()

@@ -20,46 +20,48 @@
 #define kOkBtnTag 102
 #define kShareBtnTag 103
 
-bool TipsLayer::init(int resCount)
+bool TipsLayer::init(int resCount, bool isOnePlayer)
 {
     Layer::init();
-    
-    _resCount = resCount;
-    
-    _resurrection = Sprite::createWithSpriteFrameName("resurrect.png");
-    _resurrection->setPosition(kWinSizeWidth * 0.5, kWinSizeHeight * 0.6);
-    _resurrection->setAnchorPoint(Vec2(0.5, 0));
-    _resurrection->setVisible(false);
-    addChild(_resurrection);
-    
-    _noBtn = Button::create();
-    _noBtn->setAnchorPoint(Vec2(0.5, 1));
-    _noBtn->setVisible(false);
-    _noBtn->loadTextures("no_button.png", "no_button.png", "", TextureResType::PLIST);
-    _noBtn->setPosition(Vec2(kWinSizeWidth * 0.5, _resurrection->getBoundingBox().getMinY() - 50));
-    _noBtn->addTouchEventListener(CC_CALLBACK_2(TipsLayer::buttonTouchCallback, this));
-    _noBtn->setTag(kNoBtnTag);
-    addChild(_noBtn);
-    
-    _yesBtn = Button::create();
-    _yesBtn->setAnchorPoint(Vec2(0.5, 1));
-    char name[30];
-    sprintf(name, "yes_%d.png", getResNeedCoinNum(resCount));
-    _yesBtn->loadTextures(name, name, "", TextureResType::PLIST);
-    _yesBtn->setVisible(false);
-    _yesBtn->setTag(kYesBtnTag);
-    _yesBtn->setPosition(Vec2(kWinSizeWidth * 0.5, _noBtn->getBoundingBox().getMinY() - 50));
-    _yesBtn->addTouchEventListener(CC_CALLBACK_2(TipsLayer::buttonTouchCallback, this));
-    addChild(_yesBtn);
-    
-    auto pic = Sprite::createWithSpriteFrameName("progress_bg.png");
-    _progress = ProgressTimer::create(pic);
-    _progress->setType(kCCProgressTimerTypeBar);
-    _progress->setBarChangeRate(Vec2(1, 0));
-    _progress->setMidpoint(Vec2(0, 1));
-    _progress->setPercentage(100);
-    _progress->setPosition(Vec2((_yesBtn->getContentSize().width - pic->getContentSize().width) * 0.5 + pic->getContentSize().width * 0.5, _yesBtn->getContentSize().height * 0.25));
-    _yesBtn->addChild(_progress);
+    if (isOnePlayer) {
+        _resCount = resCount;
+        
+        _resurrection = Sprite::createWithSpriteFrameName("resurrect.png");
+        _resurrection->setPosition(kWinSizeWidth * 0.5, kWinSizeHeight * 0.6);
+        _resurrection->setAnchorPoint(Vec2(0.5, 0));
+        _resurrection->setVisible(false);
+        addChild(_resurrection);
+        
+        _noBtn = Button::create();
+        _noBtn->setAnchorPoint(Vec2(0.5, 1));
+        _noBtn->setVisible(false);
+        _noBtn->loadTextures("no_button.png", "no_button.png", "", TextureResType::PLIST);
+        _noBtn->setPosition(Vec2(kWinSizeWidth * 0.5, _resurrection->getBoundingBox().getMinY() - 50));
+        _noBtn->addTouchEventListener(CC_CALLBACK_2(TipsLayer::buttonTouchCallback, this));
+        _noBtn->setTag(kNoBtnTag);
+        addChild(_noBtn);
+        
+        _yesBtn = Button::create();
+        _yesBtn->setAnchorPoint(Vec2(0.5, 1));
+        char name[30];
+        sprintf(name, "yes_%d.png", getResNeedCoinNum(resCount));
+        _yesBtn->loadTextures(name, name, "", TextureResType::PLIST);
+        _yesBtn->setVisible(false);
+        _yesBtn->setTag(kYesBtnTag);
+        _yesBtn->setPosition(Vec2(kWinSizeWidth * 0.5, _noBtn->getBoundingBox().getMinY() - 50));
+        _yesBtn->addTouchEventListener(CC_CALLBACK_2(TipsLayer::buttonTouchCallback, this));
+        addChild(_yesBtn);
+        
+        auto pic = Sprite::createWithSpriteFrameName("progress_bg.png");
+        _progress = ProgressTimer::create(pic);
+        _progress->setType(kCCProgressTimerTypeBar);
+        _progress->setBarChangeRate(Vec2(1, 0));
+        _progress->setMidpoint(Vec2(0, 1));
+        _progress->setPercentage(100);
+        _progress->setPosition(Vec2((_yesBtn->getContentSize().width - pic->getContentSize().width) * 0.5 + pic->getContentSize().width * 0.5, _yesBtn->getContentSize().height * 0.25));
+        _yesBtn->addChild(_progress);
+    }
+
     return true;
 }
 
@@ -99,10 +101,10 @@ int TipsLayer::getResNeedCoinNum(int resCount)
     return res;
 }
 
-TipsLayer *TipsLayer::createTipsLayer(int resCount)
+TipsLayer *TipsLayer::createTipsLayer(int resCount, bool isOnePlayer)
 {
     auto tips = new TipsLayer();
-    if (tips && tips->init(resCount)) {
+    if (tips && tips->init(resCount,isOnePlayer)) {
         tips->autorelease();
     } else {
         delete tips;
@@ -180,18 +182,38 @@ void TipsLayer::buttonTouchCallback(cocos2d::Ref *sender, Widget::TouchEventType
     }
 }
 
+void TipsLayer::showVsResultTipsView(Callback okBtnClick, Callback shareBtnClick, int score, bool isLeftWin)
+{
+    _playAgain = okBtnClick;
+    _share = shareBtnClick;
+    
+    buildScoreUI(score, false, isLeftWin);
+}
+
 void TipsLayer::showGameOverTips(int score)
 {
     _resurrection->setVisible(false);
     _noBtn->setVisible(false);
     _yesBtn->setVisible(false);
     
+
+    buildScoreUI(score, true, false);
+}
+
+void TipsLayer::buildScoreUI(int score, bool isOnePlayer, bool isLeftWin)
+{
     _scoreLayer = Layer::create();
     this->addChild(_scoreLayer);
     _scoreLayer->setPosition(Vec2(0, -kWinSizeHeight));
     
     // Layout score
-    auto gameOver = addSpriteWithName("gameover.png", Vec2(kWinSizeWidth * 0.5, kWinSizeHeight * 0.8));
+    Sprite *gameOver;
+    if (isOnePlayer) {
+        gameOver = addSpriteWithName("gameover.png", Vec2(kWinSizeWidth * 0.5, kWinSizeHeight * 0.8));
+    } else {
+        gameOver = addSpriteWithName(isLeftWin ? "winlose.png" : "losewin.png", Vec2(kWinSizeWidth * 0.5, kWinSizeHeight * 0.8));
+    }
+    
     auto board = addSpriteWithName("score_board.png", Vec2(kWinSizeWidth * 0.5, 0));
     board->setPosition(Vec2(kWinSizeWidth * 0.5, gameOver->getBoundingBox().getMidY() - gameOver->getContentSize().height * 0.5 - board->getContentSize().height * 0.5 - 30));
     
@@ -227,6 +249,9 @@ void TipsLayer::showGameOverTips(int score)
         auto madel = Sprite::createWithSpriteFrameName(name);
         madel->setPosition(boardW * 0.22, boardH * 0.47);
         board->addChild(madel);
+        
+        // play star anim
+        
     }
     
     // start animation

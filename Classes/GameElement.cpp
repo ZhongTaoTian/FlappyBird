@@ -59,20 +59,22 @@ bool GameElement::init(PlayerType type)
     addChild(_tipsTap2, 5);
     
     // add goldCoin
-    _goldCoin = Sprite::createWithSpriteFrameName("coin.png");
-    _goldCoin->setAnchorPoint(Vec2(1, 0.5));
-    _goldCoin->setPosition(kWinSizeWidth * 0.8, kWinSizeHeight * 0.97 - _goldCoin->getContentSize().height * 0.5);
-    this->addChild(_goldCoin, 4);
-    
-    auto numTexture = TextureCache().addImage("small_number_iphone.png");
-    auto picH = numTexture->getContentSize().height;
-    auto picW = numTexture->getContentSize().width;
-    int coinCount = GameDataManager::getInstance()->getAllCoinCount();
-
-    _goldCoinCount = LabelAtlas::create(to_string(coinCount), "small_number_iphone.png", picW * 0.1, picH, '0');
-    _goldCoinCount->setAnchorPoint(Vec2(0, 0.5));
-    _goldCoinCount->setPosition(_goldCoin->getPosition().x + 10, _goldCoin->getPosition().y);
-    addChild(_goldCoinCount, 4);
+    if (type == OnePlayer) {
+        _goldCoin = Sprite::createWithSpriteFrameName("coin.png");
+        _goldCoin->setAnchorPoint(Vec2(1, 0.5));
+        _goldCoin->setPosition(kWinSizeWidth * 0.8, kWinSizeHeight * 0.97 - _goldCoin->getContentSize().height * 0.5);
+        this->addChild(_goldCoin, 4);
+        
+        auto numTexture = TextureCache().addImage("small_number_iphone.png");
+        auto picH = numTexture->getContentSize().height;
+        auto picW = numTexture->getContentSize().width;
+        int coinCount = GameDataManager::getInstance()->getAllCoinCount();
+        
+        _goldCoinCount = LabelAtlas::create(to_string(coinCount), "small_number_iphone.png", picW * 0.1, picH, '0');
+        _goldCoinCount->setAnchorPoint(Vec2(0, 0.5));
+        _goldCoinCount->setPosition(_goldCoin->getPosition().x + 10, _goldCoin->getPosition().y);
+        addChild(_goldCoinCount, 4);
+    }
     
     // add passNum
     auto passTexture = TextureCache().addImage("large_number_iphone.png");
@@ -150,10 +152,10 @@ void GameElement::update(float dt)
     
     _index++;
     
-    if (_index == 1000000) {
+    if (_index == 135) {
         // add water pipe
         _index = 0;
-        auto wp = WaterPipe::createWaterPipe(_wpColor, _wpHeight);
+        auto wp = WaterPipe::createWaterPipe(_wpColor, _wpHeight, playType == OnePlayer);
         wp->setPosition(kWinSizeWidth, 0);
         addChild(wp);
         _waterPipes.pushBack(wp);
@@ -178,11 +180,14 @@ void GameElement::update(float dt)
                 
 #pragma mark - todo
                 // play sound effect
+                if (playType == OnePlayer) {                    
+                    GameDataManager::getInstance()->addCoin();
+                    _goldCoinCount->setString(to_string(GameDataManager::getInstance()->getAllCoinCount()));
+                }
                 _passNum->setString(to_string(++_passIndex));
-                GameDataManager::getInstance()->addCoin();
-                _goldCoinCount->setString(to_string(GameDataManager::getInstance()->getAllCoinCount()));
             }
         }
+        
         if (wp->getPosition().x < 0 - wp->getContentSize().width) {
             // remove wp
             _waterPipes.eraseObject(wp);

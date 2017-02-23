@@ -19,10 +19,11 @@ typedef std::function<void ()> Callback;
 class TipsLayer:public Layer {
     
 public:
-    virtual bool init(int resCount);
-    static TipsLayer* createTipsLayer(int resCount);
-
+    virtual bool init(int resCount, bool isOnePlayer);
+    static TipsLayer* createTipsLayer(int resCount, bool isOnePlayer = true);
+    
     void showResurrectionTipsView(Callback yesBtnClick, Callback noBtnClick, int score, Callback playAgain, Callback share);
+    void showVsResultTipsView(Callback okBtnClick, Callback shareBtnClick, int score, bool isLeftWin);
     
 private:
     Sprite* _resurrection;
@@ -41,7 +42,9 @@ private:
     void buttonTouchCallback(Ref *sender, Widget::TouchEventType type);
     void update(float dt);
     void showGameOverTips(int score);
+    
     void continueGame();
+    void buildScoreUI(int score, bool isOnePlayer, bool isLeftWin);
     int getResNeedCoinNum(int resCount);
     
     Sprite* addSpriteWithName(const std::string &name, Vec2 position);

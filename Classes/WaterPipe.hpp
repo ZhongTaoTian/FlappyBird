@@ -28,8 +28,8 @@ enum WaterPipeColorType {
 class WaterPipe:public Layer {
     
 public:
-    virtual bool init(WaterPipeColorType color, float height);
-    static WaterPipe* createWaterPipe(WaterPipeColorType color, float height);
+    virtual bool init(WaterPipeColorType color, float height, bool showCoin);
+    static WaterPipe* createWaterPipe(WaterPipeColorType color, float height, bool showCoin);
     Sprite *_coin;
     void setChildPhysicsBodyEnabled(bool enabled);
     
