@@ -259,9 +259,9 @@ void TipsLayer::buildScoreUI(int score, bool isOnePlayer, bool isLeftWin)
     medal->addChild(star1);
     medal->addChild(star2);
     medal->addChild(star3);
-    star1->runAction(RepeatForever::create(Sequence::create(starTwinkleAnimate(), DelayTime::create(0.3), nil)));
-    star2->runAction(RepeatForever::create(Sequence::create(DelayTime::create(0.1), starTwinkleAnimate(), nil)));
-    star3->runAction(RepeatForever::create(Sequence::create(DelayTime::create(0.2), starTwinkleAnimate(), nil)));
+    star1->runAction(RepeatForever::create(Sequence::create(starTwinkleAnimate(), DelayTime::create(0.5), nil)));
+    star2->runAction(RepeatForever::create(Sequence::create(DelayTime::create(0.25), starTwinkleAnimate(), nil)));
+    star3->runAction(RepeatForever::create(Sequence::create(DelayTime::create(0.4), starTwinkleAnimate(), nil)));
     
     // start animation
     auto move = MoveTo::create(0.5, Vec2(0, 0));
@@ -296,7 +296,7 @@ Animate* TipsLayer::starTwinkleAnimate()
     
     // play star anim
     auto an = Animation::createWithSpriteFrames(frames);
-    an->setDelayPerUnit(0.1);
+    an->setDelayPerUnit(0.2);
     an->setRestoreOriginalFrame(true);
     auto starAnim = Animate::create(an);
     return starAnim;

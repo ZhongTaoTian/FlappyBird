@@ -21,7 +21,7 @@
 Scene* Game::createScene(PlayerType playerType)
 {
     Scene *scene = Scene::createWithPhysics();
-    //    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+        scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     // set Gravity acceleration
     scene->getPhysicsWorld()->setGravity(Vec2(0, -1400));
     
@@ -54,7 +54,6 @@ bool Game::init(PlayerType playerType)
     contactLisner->onContactBegin = CC_CALLBACK_1(Game::onContactBegan, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactLisner, this);
     
-    //btn->loadTextures(imageName, imageName, "", TextureResType::PLIST);
     _pauseBtn = Button::create();
     _pauseBtn->loadTextures(kPauseImageName, kPauseImageName, kPauseImageName, TextureResType::PLIST);
     _pauseBtn->setAnchorPoint(Vec2(0, 1));

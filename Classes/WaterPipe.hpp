@@ -35,7 +35,8 @@ public:
     
     void pause();
     void resume();
-    
+    void stopGame();
+    WaterPipeType type;
 private:
     Sprite *_topPipe;
     Sprite *_bottomPipe;
@@ -43,10 +44,12 @@ private:
     Vector<Node *> _phyBodys;
     
     char fileName[30];
-    WaterPipeType type;
+    
     bool _showCoin;
     float _topMoveDis;
     float _bottomMoveDis;
+    
+    bool _topHasPlant;
     
     virtual void onEnterTransitionDidFinish();
     

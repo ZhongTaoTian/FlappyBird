@@ -117,6 +117,10 @@ void GameElement::stopGame()
 {
     _land->pause();
     unschedule(schedule_selector(GameElement::update));
+    for (auto it = _waterPipes.begin(); it != _waterPipes.end(); it++) {
+        WaterPipe *wp = *it;
+        wp->stopGame();
+    }
 }
 
 // 获取
@@ -128,6 +132,10 @@ int GameElement::getPassScore()
 void GameElement::birdResurrection(function<void ()> timeEnd)
 {
     _unTimeEnd = timeEnd;
+    for (auto it = _waterPipes.begin(); it != _waterPipes.end(); it++) {
+        WaterPipe *wp = *it;
+        wp->resume();
+    }
     _unrivalledIndex = 200;
     _birdUnrivalled = true;
     _land->resume();
@@ -205,11 +213,20 @@ void GameElement::pauseGame()
 {
     pause();
     _land->pause();
+    for (auto it = _waterPipes.begin(); it != _waterPipes.end(); it++) {
+        WaterPipe *wp = *it;
+        wp->pause();
+    }
 }
 
 void GameElement::resumeGame()
 {
     resume();
+
+    for (auto it = _waterPipes.begin(); it != _waterPipes.end(); it++) {
+        WaterPipe *wp = *it;
+        wp->resume();
+    }
     _land->resume();
 }
 
