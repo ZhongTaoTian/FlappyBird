@@ -19,19 +19,15 @@ bool WaterPipe::init(WaterPipeColorType color, float height, bool showCoin)
     sprintf(fileName, "pipe_%d.png", color);
     
     // random Type
-    auto typeId = arc4random_uniform(85);
-    if (typeId <= 85) {
+    auto typeId = arc4random_uniform(101);
+    if (typeId < 80) {
         type = Normal;
-    } else if (typeId > 85 && typeId <= 90) {
+    } else if (typeId > 80 && typeId <= 90) {
         type = Move;
-    } else if (typeId > 90 && typeId <= 95) {
+    } else if (typeId > 90 && typeId <= 100) {
         type = Plant;
-    } else {
-        type = Sloping;
     }
    
-    type = Plant;
-    
     _coin = Sprite::createWithSpriteFrameName("coin.png");
     if (!showCoin) {
         _coin->setOpacity(0);
@@ -116,6 +112,7 @@ bool WaterPipe::init(WaterPipeColorType color, float height, bool showCoin)
         _plant->getPhysicsBody()->setContactTestBitmask(1);
         _phyBodys.pushBack(_plant);
         this->addChild(_plant);
+        _coin->setOpacity(0);
     }
     
     this->setContentSize(Size(_topHasPlant ? _topPipe->getContentSize().width : _bottomPipe->getContentSize().width, height));

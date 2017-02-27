@@ -11,6 +11,11 @@
 #include "TipsLayer.hpp"
 #include "GameDataManager.hpp"
 #include "SelectPlayer.hpp"
+#include "SimpleAudioEngine.h"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#include <UIKit/UIKit.h>
+#endif
 
 #define kPauseImageName "pause_button.png"
 #define kPlayImageName "play_button.png"
@@ -21,7 +26,7 @@
 Scene* Game::createScene(PlayerType playerType)
 {
     Scene *scene = Scene::createWithPhysics();
-        scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+//  scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     // set Gravity acceleration
     scene->getPhysicsWorld()->setGravity(Vec2(0, -1400));
     
@@ -61,6 +66,8 @@ bool Game::init(PlayerType playerType)
     _pauseBtn->setVisible(false);
     _pauseBtn->addTouchEventListener([this](Ref *ref, Widget::TouchEventType type){
         if (type == Widget::TouchEventType::ENDED) {
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("swoosh.caf");
+        
             _btnSelected = !_btnSelected;
             if (_btnSelected) {
                 // pause
@@ -80,7 +87,6 @@ bool Game::init(PlayerType playerType)
 
 bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
 {
-    
     if (_gameOver || _birdUnrivalled) return true;
     
     // 判断是不是鸟
@@ -96,7 +102,8 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
     
     _gameOver = true;
     
-#warning play sound effect
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("hit.caf");
+    showFlashLightAnimation();
     
     // Contact object stopGame
     if (_playerType == OnePlayer) {
@@ -105,6 +112,7 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
         // start Fall
         _bird1->startFallAnimation([this](){
             // show revival view
+            
             auto tipsLayer = TipsLayer::createTipsLayer(_resCount);
             this->addChild(tipsLayer, 4);
             tipsLayer->showResurrectionTipsView([this](){
@@ -127,9 +135,10 @@ bool Game::onContactBegan(cocos2d::PhysicsContact &cat)
                 
             }, [](){
                 // share
-                CCLOG("分享");
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/ZhongTaoTian"]];
+#endif
             });
-            
         });
     } else {
         bool firstWin = false;
@@ -230,6 +239,8 @@ void Game::onEnterTransitionDidFinish()
 void Game::onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
     if (_gameOver) return;
+    
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("flap.caf");
     
     if (!_gameIsStarting) {
         _gameIsStarting = true;
@@ -375,5 +386,14 @@ void Game::update(float dt)
             _bird2->setPosition(Vec2(_bird2->getPosition().x, kWinSizeHeight - _bird2->getContentSize().height));
         }
     }
+}
+
+void Game::showFlashLightAnimation()
+{
+    auto whiteL = LayerColor::create(Color4B::WHITE);
+    addChild(whiteL, 100000);
     
+    whiteL->runAction(Sequence::create(FadeTo::create(0.25, 0), CallFuncN::create([](Node *no){
+        no->removeFromParent();
+    }), NULL));
 }

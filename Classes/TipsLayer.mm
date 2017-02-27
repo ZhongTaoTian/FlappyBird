@@ -13,7 +13,7 @@
 #include "AlertView.h"
 
 #endif
-
+#include "SimpleAudioEngine.h"
 
 #define kNoBtnTag 100
 #define kYesBtnTag 101
@@ -187,6 +187,8 @@ void TipsLayer::showVsResultTipsView(Callback okBtnClick, Callback shareBtnClick
     _playAgain = okBtnClick;
     _share = shareBtnClick;
     
+    
+    
     buildScoreUI(score, false, isLeftWin);
 }
 
@@ -204,7 +206,7 @@ void TipsLayer::buildScoreUI(int score, bool isOnePlayer, bool isLeftWin)
     _scoreLayer = Layer::create();
     this->addChild(_scoreLayer);
     _scoreLayer->setPosition(Vec2(0, -kWinSizeHeight));
-    
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("swoosh.caf");
     // Layout score
     Sprite *gameOver;
     if (isOnePlayer) {

@@ -55,6 +55,8 @@ private:
     void startGame();
     void pauseGame();
     void resumeGame();
+    
+    void showFlashLightAnimation();
 };
 
 

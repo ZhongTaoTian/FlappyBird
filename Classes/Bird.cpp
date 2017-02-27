@@ -7,6 +7,7 @@
 //  Bird
 
 #include "Bird.hpp"
+#include "SimpleAudioEngine.h"
 
 #define kBirdFlyTag 10
 #define kBirdShakeTag 11
@@ -97,6 +98,8 @@ void Bird::startFallAnimation(AnimEnd animEnd)
         }
     });
     this->runAction(Sequence::create(Spawn::create(move, rota, NULL), callback, NULL));
+    
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("drop.caf");
 }
 
 void Bird::startShakeAnimation(int birdNum)

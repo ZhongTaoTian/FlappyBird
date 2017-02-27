@@ -12,10 +12,9 @@
 #include "Const.hpp"
 
 enum WaterPipeType {
-    Normal = 0, // 正常样式 %85
-    Move,       // 上下移动 % 5
-    Plant,      // 有植物的水管 %5
-    Sloping     // 倾斜的水管 %5
+    Normal = 0, // 正常样式 %80
+    Move,       // 上下移动 % 10
+    Plant,      // 有植物的水管 %10
 };
 
 enum WaterPipeColorType {

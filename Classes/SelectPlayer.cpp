@@ -8,6 +8,7 @@
 
 #include "SelectPlayer.hpp"
 #include "Game.hpp"
+#include "SimpleAudioEngine.h"
 
 Scene* SelectPlayer::createScene()
 {
@@ -60,6 +61,9 @@ void SelectPlayer::addButton(const string &pressImageName, int tag, cocos2d::Vec
 void SelectPlayer::buttonTouchCallback(Ref *sender, Widget::TouchEventType type)
 {
     if (type == Widget::TouchEventType::ENDED) {
+        
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("swoosh.caf");
+        
         auto btn = static_cast<Button *>(sender);
         
         auto type = OnePlayer;

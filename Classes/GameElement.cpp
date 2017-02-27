@@ -8,6 +8,7 @@
 
 #include "GameElement.hpp"
 #include "GameDataManager.hpp"
+#include "SimpleAudioEngine.h"
 
 GameElement* GameElement::createGameElementLayer(PlayerType type)
 {
@@ -186,13 +187,13 @@ void GameElement::update(float dt)
             if (wp->getPosition().x < _birdX) {
                 wp->_coin->setVisible(false);
                 
-#pragma mark - todo
                 // play sound effect
                 if (playType == OnePlayer) {                    
                     GameDataManager::getInstance()->addCoin();
                     _goldCoinCount->setString(to_string(GameDataManager::getInstance()->getAllCoinCount()));
                 }
                 _passNum->setString(to_string(++_passIndex));
+                 CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("coin.aif");
             }
         }
         
