@@ -27,7 +27,7 @@ bool WaterPipe::init(WaterPipeColorType color, float height, bool showCoin)
     } else if (typeId > 90 && typeId <= 100) {
         type = Plant;
     }
-   
+    
     _coin = Sprite::createWithSpriteFrameName("coin.png");
     if (!showCoin) {
         _coin->setOpacity(0);
@@ -75,9 +75,9 @@ bool WaterPipe::init(WaterPipeColorType color, float height, bool showCoin)
         // add plant
         _plant = Sprite::createWithSpriteFrameName("bird_0.png");
         
-        float appearH = arc4random_uniform(height - kIntervalDistance - _plant->getContentSize().height);
-        while (appearH < height * 0.15) {
-            appearH = arc4random_uniform(height - kIntervalDistance - _plant->getContentSize().height);
+        float appearH = arc4random_uniform(height - kIntervalDistance);
+        while (appearH < height * 0.2) {
+            appearH = arc4random_uniform(height - kIntervalDistance);
         }
         
         if (_topHasPlant) {

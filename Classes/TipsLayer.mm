@@ -167,6 +167,7 @@ void TipsLayer::buttonTouchCallback(cocos2d::Ref *sender, Widget::TouchEventType
                 
                 break;
             case kOkBtnTag:
+                CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("swoosh.caf");
                 if (_playAgain) {
                     _playAgain();
                 }

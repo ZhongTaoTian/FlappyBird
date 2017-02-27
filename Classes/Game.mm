@@ -313,6 +313,7 @@ void Game::pauseGame()
     cover->addChild(homeBtn);
     homeBtn->addTouchEventListener([this](Ref *ref, Widget::TouchEventType type){
         if (type == Widget::TouchEventType::ENDED) {
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("swoosh.caf");
             Director::getInstance()->resume();
             Director::getInstance()->replaceScene(TransitionFade::create(0.25, SelectPlayer::createScene(), Color3B(255, 255, 255)));
         }
