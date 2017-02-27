@@ -82,6 +82,10 @@ bool Game::init(PlayerType playerType)
     });
     addChild(_pauseBtn, 1000);
     
+    auto adSprite = Sprite::create("ad3.png");
+    adSprite->setPosition(Vec2(kWinSizeWidth * 0.5, adSprite->getContentSize().height * 0.5));
+    addChild(adSprite, 1000);
+    
     return true;
 }
 
