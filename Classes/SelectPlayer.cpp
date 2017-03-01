@@ -5,6 +5,9 @@
 //  Created by 维尼的小熊 on 2017/2/8.
 //
 //  SelectModelScene
+//  博客: http://www.jianshu.com/u/5fe7513c7a57
+//  微博: http://weibo.com/5622363113/profile?topnav=1&wvr=6
+//  GitHub: https://github.com/ZhongTaoTian
 
 #include "SelectPlayer.hpp"
 #include "Game.hpp"
@@ -42,8 +45,7 @@ void SelectPlayer::addButton()
 
 void SelectPlayer::addButton(const string &pressImageName, int tag, cocos2d::Vec2 postion, const string &title)
 {
-    auto btn = Button::create();
-    btn->loadTextures(pressImageName, "", "", TextureResType::PLIST);
+    auto btn = Button::create(pressImageName, "", "", TextureResType::PLIST);
     auto btnW = btn->getContentSize().width;
     auto margin = kWinSizeWidth * 0.02;
     btn->setAnchorPoint(Vec2(0, 0));

@@ -4,7 +4,9 @@
 //
 //  Created by 维尼的小熊 on 2017/2/8.
 //
-//
+//  博客: http://www.jianshu.com/u/5fe7513c7a57
+//  微博: http://weibo.com/5622363113/profile?topnav=1&wvr=6
+//  GitHub: https://github.com/ZhongTaoTian
 
 #ifndef SelectPlayer_hpp
 #define SelectPlayer_hpp

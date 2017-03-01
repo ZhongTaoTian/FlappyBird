@@ -5,6 +5,9 @@
 //  Created by 维尼的小熊 on 2017/2/9.
 //
 //  game场景内其他元素
+//  博客: http://www.jianshu.com/u/5fe7513c7a57
+//  微博: http://weibo.com/5622363113/profile?topnav=1&wvr=6
+//  GitHub: https://github.com/ZhongTaoTian
 
 #ifndef GameElement_hpp
 #define GameElement_hpp
